@@ -1,0 +1,23 @@
+spring:
+  flyway:
+    baselineOnMigrate: true
+    url: jdbc:mysql://localhost:3306/e_healthcare
+    user: root
+    password: password
+    schemas: "e_healthcare"
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/e_healthcare?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: root
+    password: password
+    hikari:
+      connection-test-query: SELECT 1 # Keep the connection alive if idle for a long time
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+        jdbc:
+          core:
+            JdbcTemplate: DEBUG
+            StatementCreatorUtils: TRACE
