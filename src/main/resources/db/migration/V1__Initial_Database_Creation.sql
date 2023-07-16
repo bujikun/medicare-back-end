@@ -11,34 +11,19 @@ DROP DATABASE IF EXISTS `e_healthcare`;
 CREATE DATABASE `e_healthcare` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION = 'N' */;
 USE `e_healthcare`;
 
-DROP TABLE IF EXISTS `customers`;
-CREATE TABLE `customers`
-(
-    `id`             int          NOT NULL AUTO_INCREMENT,
-    `first_name`     varchar(255) NOT NULL,
-    `last_name`      varchar(255) NOT NULL,
-    `email`          varchar(100) NOT NULL,
-    `account_number` varchar(100) NOT NULL,
-    `created_on`     datetime(6)  NOT NULL,
-    `updated_on`     datetime(6) DEFAULT NULL,
-    `version`        int         DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-TRUNCATE `customers`;
-
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products`
 (
-    `id`         int            NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
     `name`       varchar(255)   NOT NULL,
     `price`      decimal(10, 2) NOT NULL,
     `img_url`    varchar(1000)  NOT NULL,
+    `description`    varchar(1000)  NOT NULL,
     `created_on` datetime(6)    NOT NULL,
     `updated_on` datetime(6) DEFAULT NULL,
     `version`    int         DEFAULT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -47,11 +32,10 @@ CREATE TABLE `products`
 DROP TABLE IF EXISTS `order_items`;
 CREATE TABLE `order_items`
 (
-    `id`          int            NOT NULL,
     `product_name`   varchar(255)   NOT NULL,
     `unit_price`  decimal(10, 2) NOT NULL,
     `quantity`    int            NOT NULL,
-    `fk_order_id` int            NOT NULL,
+    `fk_order_id`  BINARY(16)             NOT NULL,
     KEY `order_id` (`fk_order_id`),
     CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`fk_order_id`) REFERENCES `orders` (`id`)
 ) ENGINE = InnoDB
@@ -63,17 +47,19 @@ TRUNCATE `order_items`;
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`
 (
-    `id`             int          NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
     `order_number`   varchar(255) NOT NULL,
-    `fk_customer_id` int          NOT NULL,
+    `fk_user_id`  BINARY(16)           NOT NULL,
     `customer_name`  varchar(100) NOT NULL,
     `created_on`     datetime(6)  NOT NULL,
     `updated_on`     datetime(6) DEFAULT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
     `version`        int         DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `order_number` (`order_number`),
-    KEY `customer_id` (`fk_customer_id`),
-    CONSTRAINT `order_ibfk_1` FOREIGN KEY (`fk_customer_id`) REFERENCES `customers` (`id`)
+    KEY `customer_id` (`fk_user_id`),
+    CONSTRAINT `order_ibfk_1` FOREIGN KEY (`fk_user_id`) REFERENCES `users` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -81,11 +67,13 @@ CREATE TABLE `orders`
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles`
 (
-    `id`         int                                                          NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
     `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `version`    int      DEFAULT NULL,
     `created_on` datetime(6)                                                  NOT NULL,
     `updated_on` datetime DEFAULT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK_pnvtwliis6p05dapn6i3ndjrqt2` (`name`)
 ) ENGINE = InnoDB
@@ -95,11 +83,13 @@ CREATE TABLE `roles`
 DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE `permissions`
 (
-    `id`         int                                                          NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
     `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `version`    int      DEFAULT NULL,
     `created_on` datetime(6)                                                  NOT NULL,
     `updated_on` datetime DEFAULT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK_pnvtwliis6p05pn6ida3ndjrqt2` (`name`)
 ) ENGINE = InnoDB
@@ -109,12 +99,14 @@ CREATE TABLE `permissions`
 DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE `tokens`
 (
-    `id`          int           NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
     `value`       varchar(1000) NOT NULL,
     `username`    varchar(50)   NOT NULL,
     `invalidated` bit(1)        NOT NULL,
     `version`     int DEFAULT NULL,
     `created_on`  datetime(6)   NOT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -125,9 +117,13 @@ TRUNCATE `tokens`;
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
-    `id`                     int                                                           NOT NULL AUTO_INCREMENT,
-    `username`               varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
-    `password`               varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
+    `username`               varchar(50)   NOT NULL,
+    `password`               varchar(255)  NOT NULL,
+    `first_name`     varchar(255) NOT NULL,
+    `last_name`      varchar(255) NOT NULL,
+    `email`          varchar(100) NOT NULL,
+    `account_number` varchar(100) NOT NULL,
     `is_account_locked`      bit(1)                                                        NOT NULL,
     `is_account_expired`     bit(1)                                                        NOT NULL,
     `is_credentials_expired` bit(1)                                                        NOT NULL,
@@ -135,6 +131,8 @@ CREATE TABLE `users`
     `version`                int      DEFAULT NULL,
     `updated_on`             datetime DEFAULT NULL,
     `created_on`             datetime(6)                                                   NOT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK_r43af9ap4edm43mmtq01oddj6` (`username`)
 ) ENGINE = InnoDB
@@ -144,8 +142,8 @@ CREATE TABLE `users`
 DROP TABLE IF EXISTS `users_permissions`;
 CREATE TABLE `users_permissions`
 (
-    `fk_user_id`       int         NOT NULL,
-    `fk_permission_id` int         NOT NULL,
+    `fk_user_id`        BINARY(16)          NOT NULL,
+    `fk_permission_id`  BINARY(16)          NOT NULL,
     `created_on`       datetime(6) NOT NULL,
     `updated_on`       datetime DEFAULT NULL,
     PRIMARY KEY (`fk_user_id`, `fk_permission_id`),
@@ -159,8 +157,8 @@ CREATE TABLE `users_permissions`
 DROP TABLE IF EXISTS `roles_permissions`;
 CREATE TABLE `roles_permissions`
 (
-    `fk_role_id`       int         NOT NULL,
-    `fk_permission_id` int         NOT NULL,
+    `fk_role_id`        BINARY(16)          NOT NULL,
+    `fk_permission_id`  BINARY(16)          NOT NULL,
     `created_on`       datetime(6) NOT NULL,
     `updated_on`       datetime DEFAULT NULL,
     PRIMARY KEY (`fk_role_id`, `fk_permission_id`),
