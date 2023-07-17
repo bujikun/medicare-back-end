@@ -14,16 +14,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Configuration(proxyBeanMethods = false)
+//@Configuration(proxyBeanMethods = false)
 public class InitialDataConfig {
     @Bean
-    public CommandLineRunner commandLineRunner(ProductRepository foodRepository,
+    public CommandLineRunner commandLineRunner(ProductRepository productRepository,
                                                UserRepository userRepository,
                                                PermissionRepository permissionRepository,
                                                CategoryRepository categoryRepository,
@@ -31,10 +30,6 @@ public class InitialDataConfig {
                                                PasswordEncoder passwordEncoder
     ) {
         return args -> {
-//            foodRepository.deleteAll();
-//            userRepository.deleteAll();
-//            permissionRepository.deleteAll();
-//            categoryRepository.deleteAll();
             try {
                 var c1 = Category.builder()
                         .name("Syringes")
@@ -69,7 +64,10 @@ public class InitialDataConfig {
                                 "periodontal pockets and gingival acute infection. ")
                         .imageUrl("https://www.inspiredtaste.net/wp-content/uploads/2019/03/" +
                                 "Spaghetti-with-Meat-Sauce-Recipe-1-1200.jpg")
+
                         .build();
+                f1.setProductCategories(new HashSet<>());
+                f1.linkCategory(c1);
                 var f2 = Product.builder()
                         .price(new BigDecimal(10d))
                         .name("PROTEC LATEX POWDER FREE SMALL GLOVES")
@@ -89,6 +87,8 @@ public class InitialDataConfig {
                                 "no_upscale():max_bytes(150000):strip_icc()/25473-the-perfect-basic-" +
                                 "burger-DDMFS-4x3-56eaba3833fd4a26a82755bcd0be0c54.jpg")
                         .build();
+                f2.setProductCategories(new HashSet<>());
+                f2.linkCategory(c2);
 
                 var f3 = Product.builder()
                         .price(new BigDecimal(15.99d))
@@ -101,6 +101,10 @@ public class InitialDataConfig {
                         .imageUrl("https://static.onecms.io/wp-content/uploads/sites/43/2023/01/30/70935-taqueria-style-" +
                                 "tacos-mfs-3x2-35.jpg")
                         .build();
+
+                f3.setProductCategories(new HashSet<>());
+                f3.linkCategory(c3);
+
                 var f5 = Product.builder()
                         .price(new BigDecimal(2.77d))
                         .name("Cura-Heat Back and Shoulder Pain 3 Heat PacksCura-Heat Back and Shoulder Pain 3 Heat Packs")
@@ -113,6 +117,8 @@ public class InitialDataConfig {
                                 "muscles. Cura-Heat Back & Shoulder Pain can be bought from OxfordPharmacyOnline.")
                         .build();
 
+                f5.setProductCategories(new HashSet<>());
+                f5.linkCategory(c4);
                 var f6 = Product.builder()
                         .price(new BigDecimal(7.50d))
                         .name("Dermovate (Clobetasol Propionate) 0.05% Cream")
@@ -133,38 +139,22 @@ public class InitialDataConfig {
                                 "corticosteroids which is only available on prescription. Dermovate is only to be used " +
                                 "when other steroid creams have not been effective.")
                         .build();
-                foodRepository.saveAll(List.of(f1, f2, f3, f5, f6));
 
-                var perm8 = Permission.builder()
-                        .name("user:read:all")
+                f6.setProductCategories(new HashSet<>());
+                f6.linkCategory(c4);
+
+                productRepository.saveAll(List.of(f1, f2, f3, f5, f6));
+
+                var perm1 = Permission.builder()
+                        .name("USER")
                         .createdOn(dateUtil.now())
                         .build();
-                var perm6 = Permission.builder()
-                        .name("product:create:one")
-                        .createdOn(dateUtil.now())
-                        .build();
-
-                var perm5 = Permission.builder()
-                        .name("product:read:one")
-                        .createdOn(dateUtil.now())
-                        .build();
-
-                var perm7 = Permission.builder()
-                        .name("product:delete:one")
+                var perm2 = Permission.builder()
+                        .name("ADMIN")
                         .createdOn(dateUtil.now())
                         .build();
 
-                var perm4 = Permission.builder()
-                        .name("order:read:all")
-                        .createdOn(dateUtil.now())
-                        .build();
-
-                var perm3 = Permission.builder()
-                        .name("user:change-password")
-                        .createdOn(dateUtil.now())
-                        .build();
-
-                permissionRepository.saveAll(Set.of(perm3,perm4,perm5,perm6,perm7,perm8));
+                permissionRepository.saveAll(Set.of(perm1,perm2));
 
                 var admin = User.builder()
                         .username("admin")
@@ -181,7 +171,7 @@ public class InitialDataConfig {
                         .userPermissions(new HashSet<>())
                         .build();
 
-                admin.linkPermissions(Set.of(perm3,perm4,perm5,perm6,perm7,perm8));
+                admin.linkPermissions(Set.of(perm2));
 
                 var manager = User.builder()
                         .username("user")
@@ -197,7 +187,7 @@ public class InitialDataConfig {
                         .createdOn(dateUtil.now())
                         .userPermissions(new HashSet<>())
                         .build();
-                manager.linkPermissions(Set.of(perm3,perm4));
+                manager.linkPermissions(Set.of(perm1));
                 userRepository.save(admin);
                 userRepository.save(manager);
 

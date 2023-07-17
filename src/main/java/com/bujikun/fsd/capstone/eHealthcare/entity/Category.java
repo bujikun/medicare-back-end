@@ -13,8 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @since 2023
  */
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
 @Setter
 @SuperBuilder

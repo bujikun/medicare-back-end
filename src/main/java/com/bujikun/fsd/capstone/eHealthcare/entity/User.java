@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
  * @author Newton Bujiku
  * @since 2023
  */
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @SuperBuilder

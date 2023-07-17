@@ -3,6 +3,7 @@ package com.bujikun.fsd.capstone.eHealthcare.entity;
 import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
@@ -43,14 +44,19 @@ public class Product extends BaseEntity {
 
     public void linkCategories(Set<Category> categories) {
         categories.stream()
-                .map(categoryToProductCategory)
+                .map(category -> {
+            var pc = new ProductCategory();
+            pc.setCategoryId(AggregateReference.to(category.getId()));
+            pc.setCreatedOn(DateUtil.getNow());
+            return pc;
+        })
                 .forEach(productCategories::add);
     }
-
-    private Function<Category,ProductCategory> categoryToProductCategory = (Category category) -> {
-        var pc = new ProductCategory();
-        pc.setCategoryId(AggregateReference.to(category.getId()));
-        pc.setCreatedOn(DateUtil.getNow());
-        return pc;
-    };
+//    @Transient
+//    private Function<Category,ProductCategory> categoryToProductCategory = (Category category) -> {
+//        var pc = new ProductCategory();
+//        pc.setCategoryId(AggregateReference.to(category.getId()));
+//        pc.setCreatedOn(DateUtil.getNow());
+//        return pc;
+//    };
 }

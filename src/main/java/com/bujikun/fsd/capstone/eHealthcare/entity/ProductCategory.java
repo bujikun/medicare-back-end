@@ -1,6 +1,7 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -18,15 +19,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Table(name = "products_categories")
-public class ProductCategory {
+public class ProductCategory extends NonAggregateEntity<Category,UUID>{
     @Column("fk_category_id")
-    private AggregateReference<Permission, UUID> categoryId;
-    @CreatedDate
-    @Column("created_on")
-    private Instant createdOn;
-    @LastModifiedDate
-    @Column("updated_on")
-    private Instant updatedOn;
+    private AggregateReference<Category, UUID> categoryId;
+
 }

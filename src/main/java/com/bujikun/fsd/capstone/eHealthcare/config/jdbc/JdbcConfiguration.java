@@ -12,16 +12,23 @@ import java.util.UUID;
 @Configuration
 public class JdbcConfiguration extends AbstractJdbcConfiguration {
     @Bean
-    public BeforeConvertCallback<BaseEntity> convertCallback(){
-        return entity ->{
-            if(entity.getId() == null){
+    public BeforeConvertCallback<BaseEntity> convertCallback() {
+        return entity -> {
+            if (entity.getId() == null) {
                 entity.setId(UUID.randomUUID());
             }
             return entity;
         };
     }
+
     @Override
     protected List<?> userConverters() {
-        return List.of(new BinaryToUuidConverter(),new UuidToBinaryConverter());
+        return List.of(
+                new AggregateReferenceToBinaryConverter(),
+                new BinaryToAggregateReferenceConverter(),
+                new BinaryToUuidConverter(),
+                new UuidToBinaryConverter(),
+                new TimeToStringConverter()
+        );
     }
 }

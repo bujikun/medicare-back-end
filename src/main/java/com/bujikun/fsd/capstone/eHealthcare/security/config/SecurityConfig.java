@@ -29,20 +29,17 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.List;
 import java.util.UUID;
 
 @Configuration(proxyBeanMethods = false)
 @EnableMethodSecurity
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig {
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -75,12 +72,9 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                // .cors(cors->cors.configurationSource(corsConfigurationSource))
+                .securityMatcher("/api/v1/**")
                 .authorizeHttpRequests(
                         reqs -> reqs
-                                .requestMatchers(HttpMethod.GET, "/api/foods", "/api/foods/search", "/api/foods/{id}")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/auth/invalidate").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
