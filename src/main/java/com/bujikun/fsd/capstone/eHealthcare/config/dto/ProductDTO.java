@@ -21,7 +21,7 @@ public class ProductDTO {
     private UUID id;
     private String name;
     private BigDecimal price;
-    @Column("image_url")
+    @Column("img_url")
     @JsonProperty("image_url")
     private String imageUrl;
     @JsonProperty("description")

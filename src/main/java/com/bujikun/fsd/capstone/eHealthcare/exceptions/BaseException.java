@@ -1,10 +1,14 @@
 package com.bujikun.fsd.capstone.eHealthcare.exceptions;
 
-import lombok.*;
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor
-@Getter
-@Setter
 public class BaseException extends RuntimeException{
     protected  String message;
+
+    public BaseException(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

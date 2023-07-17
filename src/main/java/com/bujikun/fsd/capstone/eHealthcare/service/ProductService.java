@@ -29,6 +29,11 @@ public class ProductService implements IBaseService<Product, UUID> {
 
     }
 
+    public Optional<ProductDTO> findOneById(UUID uuid) {
+        return productRepository.findOneById(uuid);
+
+    }
+
     @Override
     public Product save(Product product) {
         return productRepository.save(product);
