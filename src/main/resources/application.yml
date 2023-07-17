@@ -1,7 +1,7 @@
 spring:
   flyway:
-    baselineOnMigrate: true
-    url: jdbc:mysql://localhost:3306/e_healthcare
+    baseline-on-migrate: true
+    url: jdbc:mysql://localhost:3306/e_healthcare?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     user: root
     password: password
     schemas: "e_healthcare"

@@ -7,14 +7,14 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 SET NAMES utf8mb4;
 
-DROP DATABASE IF EXISTS `e_healthcare`;
-CREATE DATABASE `e_healthcare` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION = 'N' */;
+# DROP DATABASE IF EXISTS `e_healthcare`;
+# CREATE DATABASE `e_healthcare` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION = 'N' */;
 USE `e_healthcare`;
 
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products`
 (
-    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL,
     `name`       varchar(255)   NOT NULL,
     `price`      decimal(10, 2) NOT NULL,
     `img_url`    varchar(1000)  NOT NULL,
@@ -47,7 +47,7 @@ TRUNCATE `order_items`;
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`
 (
-    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL,
     `order_number`   varchar(255) NOT NULL,
     `fk_user_id`  BINARY(16)           NOT NULL,
     `customer_name`  varchar(100) NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE `orders`
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles`
 (
-    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL,
     `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `version`    int      DEFAULT NULL,
     `created_on` datetime(6)                                                  NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `roles`
 DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE `permissions`
 (
-    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL,
     `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `version`    int      DEFAULT NULL,
     `created_on` datetime(6)                                                  NOT NULL,
@@ -99,12 +99,13 @@ CREATE TABLE `permissions`
 DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE `tokens`
 (
-    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL,
     `value`       varchar(1000) NOT NULL,
     `username`    varchar(50)   NOT NULL,
     `invalidated` bit(1)        NOT NULL,
     `version`     int DEFAULT NULL,
     `created_on`  datetime(6)   NOT NULL,
+    `updated_on`  datetime(6)   DEFAULT NULL,
     `created_by`       varchar(50) DEFAULT NULL,
     `last_modified_by`       varchar(50) DEFAULT NULL,
     PRIMARY KEY (`id`)
@@ -116,11 +117,11 @@ CREATE TABLE `tokens`
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
-    `id`         BINARY(16)            NOT NULL AUTO_INCREMENT,
+    `id`         BINARY(16)            NOT NULL ,
     `username`               varchar(50)   NOT NULL,
     `password`               varchar(255)  NOT NULL,
-    `first_name`     varchar(255) NOT NULL,
-    `last_name`      varchar(255) NOT NULL,
+    `firstname`     varchar(255) NOT NULL,
+    `lastname`      varchar(255) NOT NULL,
     `email`          varchar(100) NOT NULL,
     `account_number` varchar(100) NOT NULL,
     `is_account_locked`      bit(1)                                                        NOT NULL,

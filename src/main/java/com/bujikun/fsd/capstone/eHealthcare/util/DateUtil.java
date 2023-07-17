@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public class DateUtil {
@@ -17,6 +18,6 @@ public class DateUtil {
     }
 
     public Instant now(){
-        return Instant.now();
+        return Instant.now().truncatedTo(ChronoUnit.SECONDS);
     }
 }
