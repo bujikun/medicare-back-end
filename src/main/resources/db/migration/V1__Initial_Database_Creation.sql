@@ -29,6 +29,37 @@ CREATE TABLE `products`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE `categories`
+(
+    `id`         BINARY(16)            NOT NULL,
+    `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `version`    int      DEFAULT NULL,
+    `created_on` datetime(6)                                                  NOT NULL,
+    `updated_on` datetime DEFAULT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `UK_pnvtwliipn6ida3ndjrqt2` (`name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS `products_categories`;
+CREATE TABLE `products_categories`
+(
+    `fk_product_id`        BINARY(16)          NOT NULL,
+    `fk_category_id`  BINARY(16)          NOT NULL,
+    `created_on`       datetime(6) NOT NULL,
+    `updated_on`       datetime DEFAULT NULL,
+    PRIMARY KEY (`fk_product_id`, `fk_category_id`),
+    KEY `FKbvwr8podneeiefx7agb3y6w` (`fk_category_id`),
+    CONSTRAINT `FKaeu88selaevs59733qluau` FOREIGN KEY (`fk_product_id`) REFERENCES `products` (`id`),
+    CONSTRAINT `FKbvwr8podnb6u53eeiefx7a` FOREIGN KEY (`fk_category_id`) REFERENCES `categories` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+
 DROP TABLE IF EXISTS `order_items`;
 CREATE TABLE `order_items`
 (

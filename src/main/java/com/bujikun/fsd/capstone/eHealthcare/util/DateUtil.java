@@ -20,4 +20,8 @@ public class DateUtil {
     public Instant now(){
         return Instant.now().truncatedTo(ChronoUnit.SECONDS);
     }
+    public static Instant getNow(){
+        return Instant.now().truncatedTo(ChronoUnit.SECONDS);
+    }
+
 }

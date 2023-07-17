@@ -1,8 +1,10 @@
 package com.bujikun.fsd.capstone.eHealthcare.config.data;
 
+import com.bujikun.fsd.capstone.eHealthcare.entity.Category;
 import com.bujikun.fsd.capstone.eHealthcare.entity.Permission;
 import com.bujikun.fsd.capstone.eHealthcare.entity.Product;
 import com.bujikun.fsd.capstone.eHealthcare.entity.User;
+import com.bujikun.fsd.capstone.eHealthcare.repository.CategoryRepository;
 import com.bujikun.fsd.capstone.eHealthcare.repository.PermissionRepository;
 import com.bujikun.fsd.capstone.eHealthcare.repository.ProductRepository;
 import com.bujikun.fsd.capstone.eHealthcare.repository.UserRepository;
@@ -24,65 +26,114 @@ public class InitialDataConfig {
     public CommandLineRunner commandLineRunner(ProductRepository foodRepository,
                                                UserRepository userRepository,
                                                PermissionRepository permissionRepository,
+                                               CategoryRepository categoryRepository,
                                                DateUtil dateUtil,
                                                PasswordEncoder passwordEncoder
     ) {
         return args -> {
-            foodRepository.deleteAll();
+//            foodRepository.deleteAll();
+//            userRepository.deleteAll();
+//            permissionRepository.deleteAll();
+//            categoryRepository.deleteAll();
             try {
+                var c1 = Category.builder()
+                        .name("Syringes")
+                        .createdOn(dateUtil.now())
+                        .build();
+                var c2 = Category.builder()
+                        .name("Gloves")
+                        .createdOn(dateUtil.now())
+                        .build();
+                var c3 = Category.builder()
+                        .name("Toothbrushes")
+                        .createdOn(dateUtil.now())
+                        .build();
+                var c4 = Category.builder()
+                        .name("Medicines")
+                        .createdOn(dateUtil.now())
+                        .build();
+                categoryRepository.saveAll(Set.of(c1,c2,c3,c4));
+
                 var f1 = Product.builder()
                         .price(new BigDecimal(20.55d))
-                        .name("Spaghetti")
+                        .name("SYRINGE INTRALIGAMENTAL 1.8ML EURO THREAD")
                         .createdOn(dateUtil.now())
-                        .description("Some nice spaghetti")
+                        .description("SYRINGES FOR INTRALIGAMENTAL ANAESTHESIA\n" +
+                                "(4962 - 4963 - 4964)\n" +
+                                "The intraligament anaesthesia technique is used for the treatment of " +
+                                "individual teeth by means of an injection between the alveolar crest and the " +
+                                "tooth root. With this technique the needle is inserted through the gingival sulcus " +
+                                "into the periodontal space along the mesial or distal surface of the tooth: the " +
+                                "anaesthetic solution must be injected slowly keeping a constant and moderate pressure " +
+                                "to facilitate the distribution of the liquid. Contraindicated in presence of deep " +
+                                "periodontal pockets and gingival acute infection. ")
                         .imageUrl("https://www.inspiredtaste.net/wp-content/uploads/2019/03/" +
                                 "Spaghetti-with-Meat-Sauce-Recipe-1-1200.jpg")
                         .build();
                 var f2 = Product.builder()
                         .price(new BigDecimal(10d))
-                        .name("Burger")
+                        .name("PROTEC LATEX POWDER FREE SMALL GLOVES")
                         .createdOn(dateUtil.now())
-                        .description("Some nice burger")
+                        .description("Powder Free Latex Gloves - Latex Exam Gloves\n" +
+                                "\n" +
+                                "Price is for a Carton of 10 boxes of 100\n" +
+                                "\n" +
+                                "    designed for use in medical areas where protection from blood borne infection is essential.\n" +
+                                "    Ambidextrous fitting.\n" +
+                                "    Up to five sizes available.\n" +
+                                "    High production standards to TGA and FDA requirements from an ISO audited supplier.\n" +
+                                "    No Powdered Gloves for people with allergies to conventional glove powders.\n" +
+                                "    Each of the three types are coloured coded for easy identification.\n" +
+                                "    Perspex Gloves box dispensers available\n")
                         .imageUrl("https://www.allrecipes.com/thmb/5JVfA7MxfTUPfRerQMdF-nGKsLY=/1500x0/filters:" +
                                 "no_upscale():max_bytes(150000):strip_icc()/25473-the-perfect-basic-" +
                                 "burger-DDMFS-4x3-56eaba3833fd4a26a82755bcd0be0c54.jpg")
                         .build();
 
                 var f3 = Product.builder()
-                        .price(new BigDecimal(5.99d))
-                        .name("French Fries")
-                        .createdOn(dateUtil.now())
-                        .description("Some nice fries")
-                        .imageUrl("https://www.seriouseats.com/thmb/Il7mv9ZSDh7n0cZz3t3V-28ImkQ=/1500x0/filters:no_upscale()" +
-                                ":max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration_" +
-                                "_serious_eats__seriouseats.com__2018__04__20180309-french-fries-vicky-wasik-" +
-                                "15-5a9844742c2446c7a7be9fbd41b6e27d.jpg")
-                        .build();
-                var f4 = Product.builder()
                         .price(new BigDecimal(15.99d))
-                        .name("Tacos")
+                        .name("TEPE NOVA SOFT TOOTHBRUSH 80 PACK")
                         .createdOn(dateUtil.now())
-                        .description("Some nice tacos")
+                        .description("Nova has a tapered brush head with an active tip for increased access. It is " +
+                                "specially efficient around the posterior teeth and other difficult to reach areas. " +
+                                "The end-rounded filaments ensure gentle cleaning. Non-slip handle with thumb pad. " +
+                                "Neck can be angled without heating. Blue tip: medium, yellow tip: soft, pink tip: x-soft. ")
                         .imageUrl("https://static.onecms.io/wp-content/uploads/sites/43/2023/01/30/70935-taqueria-style-" +
                                 "tacos-mfs-3x2-35.jpg")
                         .build();
                 var f5 = Product.builder()
                         .price(new BigDecimal(2.77d))
-                        .name("Biscuits")
+                        .name("Cura-Heat Back and Shoulder Pain 3 Heat PacksCura-Heat Back and Shoulder Pain 3 Heat Packs")
                         .imageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Biscuits_in_Ghana.jpg/220px" +
                                 "-Biscuits_in_Ghana.jpg")
                         .createdOn(dateUtil.now())
-                        .description("Some nice biscuits")
+                        .description("Cura-Heat Back & Shoulder Pain 3 Heat Packs is a heat patch which gives 12 hour " +
+                                "relief from muscles and joint aches and pains. It works by increasing the blood " +
+                                "circulation in the area which in turn reduces the stiffness and relaxes the sore " +
+                                "muscles. Cura-Heat Back & Shoulder Pain can be bought from OxfordPharmacyOnline.")
                         .build();
 
                 var f6 = Product.builder()
                         .price(new BigDecimal(7.50d))
-                        .name("French Pasta")
+                        .name("Dermovate (Clobetasol Propionate) 0.05% Cream")
                         .imageUrl("https://www.sidechef.com/recipe/81372375-5170-4e31-884d-b5f7070fb924.jpg?d=1408x1120")
                         .createdOn(dateUtil.now())
-                        .description("Some nice pasta")
+                        .description("If you suffer from chronic skin flare ups and other corticosteroid creams have not " +
+                                "worked, Dermovate could help. \n" +
+                                "\n" +
+                                "With OxfordOnlinePharmacy it is easier than ever to get your Dermovate prescription " +
+                                "online: no waiting times, no hassle.\n" +
+                                "\n" +
+                                "Dermovate is a strong topical steroid which is effective in the treatment of severe " +
+                                "skin conditions such as eczema and psoriasis.\n" +
+                                "\n" +
+                                "Dermovate is a cream that contains the active ingredient Clobetasol Propionate, which " +
+                                "is a topical corticosteroid (topical means that it is applied direct to affected area," +
+                                " and a corticosteroid reduces inflammation). Dermovate is stronger than other " +
+                                "corticosteroids which is only available on prescription. Dermovate is only to be used " +
+                                "when other steroid creams have not been effective.")
                         .build();
-                foodRepository.saveAll(List.of(f1, f2, f3, f4, f5, f6));
+                foodRepository.saveAll(List.of(f1, f2, f3, f5, f6));
 
                 var perm8 = Permission.builder()
                         .name("user:read:all")

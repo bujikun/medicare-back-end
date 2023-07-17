@@ -1,15 +1,17 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
+import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 @Setter
 @SuperBuilder
 @Table(name = "products")
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
     @Column("name")
     private String name;
     @Column("price")
@@ -25,4 +27,30 @@ public class Product extends BaseEntity{
     @Column("img_url")
     private String imageUrl;
     private String description;
+    @MappedCollection(idColumn = "fk_product_id", keyColumn = "fk_category_id")
+    private Set<ProductCategory> productCategories;
+
+    {
+        productCategories = new HashSet<>();
+    }
+
+    public void linkCategory(Category category) {
+        var pc = new ProductCategory();
+        pc.setCategoryId(AggregateReference.to(category.getId()));
+        pc.setCreatedOn(DateUtil.getNow());
+        productCategories.add(pc);
+    }
+
+    public void linkCategories(Set<Category> categories) {
+        categories.stream()
+                .map(categoryToProductCategory)
+                .forEach(productCategories::add);
+    }
+
+    private Function<Category,ProductCategory> categoryToProductCategory = (Category category) -> {
+        var pc = new ProductCategory();
+        pc.setCategoryId(AggregateReference.to(category.getId()));
+        pc.setCreatedOn(DateUtil.getNow());
+        return pc;
+    };
 }

@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
+import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.*;
@@ -52,7 +53,7 @@ public class User extends BaseEntity{
     public void linkPermission(Permission permission){
         var userPermission = new UserPermission();
         userPermission.setPermissionId(AggregateReference.to(permission.getId()));
-        userPermission.setCreatedOn(LocalDateTime.now());
+        userPermission.setCreatedOn(DateUtil.getNow());
         userPermissions.add(userPermission);
     }
 
@@ -61,7 +62,7 @@ public class User extends BaseEntity{
                 .map(permission->{
                     var userPerm = new UserPermission();
                     userPerm.setPermissionId(AggregateReference.to(permission.getId()));
-                    userPerm.setCreatedOn(LocalDateTime.now());
+                    userPerm.setCreatedOn(DateUtil.getNow());
                     return userPerm;
                 })
                 .collect(Collectors.toSet());

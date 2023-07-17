@@ -8,7 +8,6 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -20,10 +19,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Table(name = "users_permissions")
-public class UserPermission {
-    @Column("fk_permission_id")
-    private AggregateReference<Permission, UUID> permissionId;
+@Table(name = "products_categories")
+public class ProductCategory {
+    @Column("fk_category_id")
+    private AggregateReference<Permission, UUID> categoryId;
     @CreatedDate
     @Column("created_on")
     private Instant createdOn;
