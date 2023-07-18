@@ -21,12 +21,15 @@ public class SecurityUserDetailsResultSetExtractor implements ResultSetExtractor
                 securityUserDetails = new SecurityUserDetails(
                         rs.getString("username"),
                         rs.getString("password"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("account_number"),
                         rs.getBoolean("is_account_locked"),
                         rs.getBoolean("is_account_expired"),
                         rs.getBoolean("is_credentials_expired"),
                         rs.getBoolean("is_enabled"),
-
                         permissionNames
+
                 );
             }
             securityUserDetails.getPermissionNames().add(rs.getString("permission_name"));

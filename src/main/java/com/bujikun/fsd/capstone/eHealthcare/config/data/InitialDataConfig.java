@@ -11,6 +11,7 @@ import com.bujikun.fsd.capstone.eHealthcare.repository.UserRepository;
 import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
@@ -161,7 +162,7 @@ public class InitialDataConfig {
                         .firstname("admin")
                         .lastname("admin")
                         .email("admin@admin.com")
-                        .accountNumber(UUID.randomUUID().toString())
+                        .accountNumber(UUID.randomUUID().toString().toUpperCase())
                         .password(passwordEncoder.encode("password"))
                         .isEnabled(true)
                         .isAccountExpired(false)
@@ -178,7 +179,7 @@ public class InitialDataConfig {
                         .firstname("user")
                         .lastname("user")
                         .email("user@user.com")
-                        .accountNumber(UUID.randomUUID().toString())
+                        .accountNumber(UUID.randomUUID().toString().toUpperCase())
                         .password(passwordEncoder.encode("password"))
                         .isEnabled(true)
                         .isAccountExpired(false)

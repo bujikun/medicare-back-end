@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.security.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,9 @@ import java.util.stream.Collectors;
 public class SecurityUserDetails implements UserDetails {
     private String username;
     private String password;
+    private String fullname;
+    private String email;
+    private String accountNumber;
     private Boolean isAccountLocked;
     private Boolean isAccountExpired;
     private Boolean isCredentialsExpired;

@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.security.controller;
 
+import com.bujikun.fsd.capstone.eHealthcare.security.dto.AuthDTO;
 import com.bujikun.fsd.capstone.eHealthcare.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenController {
     private final TokenService tokenService;
     @PostMapping("/login")
-    public ResponseEntity<String> create(Authentication authentication){
+    public ResponseEntity<AuthDTO> create(Authentication authentication){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(tokenService.generateToken(authentication));
     }

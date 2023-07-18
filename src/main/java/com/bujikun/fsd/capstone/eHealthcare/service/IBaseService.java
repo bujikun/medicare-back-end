@@ -11,4 +11,5 @@ public interface IBaseService<T extends BaseEntity,U> {
     T save(T t);
     boolean update(T t);
     void deleteById(U u);
+    Integer getCount();
 }

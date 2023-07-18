@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.security.service;
 
+import com.bujikun.fsd.capstone.eHealthcare.security.dto.AuthDTO;
 import com.bujikun.fsd.capstone.eHealthcare.security.entity.Token;
 import com.bujikun.fsd.capstone.eHealthcare.security.model.SecurityUserDetails;
 import com.bujikun.fsd.capstone.eHealthcare.security.repository.TokenRepository;
@@ -20,7 +21,7 @@ public class TokenService {
     private final JwtEncoder jwtEncoder;
     private final TokenRepository tokenRepository;
     private final DateUtil dateUtil;
-    public String generateToken(Authentication authentication){
+    public AuthDTO generateToken(Authentication authentication){
         var ud = (SecurityUserDetails) authentication.getPrincipal();
         JwtClaimsSet claims  =  JwtClaimsSet.builder()
                 .issuer("http://localhost:8080")
@@ -39,8 +40,13 @@ public class TokenService {
                 .version(1)
                 .build();
         tokenRepository.save(token);
-        System.out.println(jwtTokenValue.length());
-        return jwtTokenValue;
+        return AuthDTO.builder()
+                .token(jwtTokenValue)
+                .email(ud.getEmail())
+                .fullname(ud.getFullname())
+                .accountNumber(ud.getAccountNumber())
+                .role((String) ud.getPermissionNames().toArray()[0])
+                .build();
     }
 
     public Token findByValue(String value){

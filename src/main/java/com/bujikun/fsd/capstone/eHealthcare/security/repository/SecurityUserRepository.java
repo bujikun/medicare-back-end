@@ -13,6 +13,9 @@ public interface SecurityUserRepository extends BaseRepository<User, UUID> {
     @Query(value = """
             SELECT username,
                    password,
+                   concat(firstname," ",lastname) as fullname,
+                   email,
+                   account_number,
                    is_account_expired,
                    is_account_locked,
                    is_credentials_expired,

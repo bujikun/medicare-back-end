@@ -43,4 +43,6 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
    WHERE `products`.id = :id
 """)
     Optional<ProductDTO> findOneById(@Param("id") UUID id);
+    @Query("SELECT COUNT(*) FROM products")
+    Integer getCount();
 }

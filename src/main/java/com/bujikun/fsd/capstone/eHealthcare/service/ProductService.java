@@ -50,6 +50,11 @@ public class ProductService implements IBaseService<Product, UUID> {
         productRepository.deleteById(uuid);
     }
 
+    @Override
+    public Integer getCount() {
+        return productRepository.getCount();
+    }
+
     public List<ProductDTO> findAllWithCategory(){
         return productRepository.findAllWithCategory();
     }
