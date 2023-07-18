@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-//@Configuration(proxyBeanMethods = false)
+@Configuration(proxyBeanMethods = false)
 public class InitialDataConfig {
     @Bean
     public CommandLineRunner commandLineRunner(ProductRepository productRepository,
@@ -35,17 +35,21 @@ public class InitialDataConfig {
                 var c1 = Category.builder()
                         .name("Syringes")
                         .createdOn(dateUtil.now())
+                        .deleted(false)
                         .build();
                 var c2 = Category.builder()
                         .name("Gloves")
                         .createdOn(dateUtil.now())
+                        .deleted(false)
                         .build();
                 var c3 = Category.builder()
                         .name("Toothbrushes")
+                        .deleted(false)
                         .createdOn(dateUtil.now())
                         .build();
                 var c4 = Category.builder()
                         .name("Medicines")
+                        .deleted(false)
                         .createdOn(dateUtil.now())
                         .build();
                 categoryRepository.saveAll(Set.of(c1,c2,c3,c4));
@@ -53,6 +57,7 @@ public class InitialDataConfig {
                 var f1 = Product.builder()
                         .price(new BigDecimal(20.55d))
                         .name("SYRINGE INTRALIGAMENTAL 1.8ML EURO THREAD")
+                        .deleted(false)
                         .createdOn(dateUtil.now())
                         .description("SYRINGES FOR INTRALIGAMENTAL ANAESTHESIA\n" +
                                 "(4962 - 4963 - 4964)\n" +
@@ -71,6 +76,7 @@ public class InitialDataConfig {
                 f1.linkCategory(c1);
                 var f2 = Product.builder()
                         .price(new BigDecimal(10d))
+                        .deleted(false)
                         .name("PROTEC LATEX POWDER FREE SMALL GLOVES")
                         .createdOn(dateUtil.now())
                         .description("Powder Free Latex Gloves - Latex Exam Gloves\n" +
@@ -93,6 +99,7 @@ public class InitialDataConfig {
 
                 var f3 = Product.builder()
                         .price(new BigDecimal(15.99d))
+                        .deleted(false)
                         .name("TEPE NOVA SOFT TOOTHBRUSH 80 PACK")
                         .createdOn(dateUtil.now())
                         .description("Nova has a tapered brush head with an active tip for increased access. It is " +
@@ -116,6 +123,7 @@ public class InitialDataConfig {
                                 "relief from muscles and joint aches and pains. It works by increasing the blood " +
                                 "circulation in the area which in turn reduces the stiffness and relaxes the sore " +
                                 "muscles. Cura-Heat Back & Shoulder Pain can be bought from OxfordPharmacyOnline.")
+                        .deleted(false)
                         .build();
 
                 f5.setProductCategories(new HashSet<>());
@@ -139,6 +147,7 @@ public class InitialDataConfig {
                                 " and a corticosteroid reduces inflammation). Dermovate is stronger than other " +
                                 "corticosteroids which is only available on prescription. Dermovate is only to be used " +
                                 "when other steroid creams have not been effective.")
+                        .deleted(false)
                         .build();
 
                 f6.setProductCategories(new HashSet<>());
@@ -149,9 +158,11 @@ public class InitialDataConfig {
                 var perm1 = Permission.builder()
                         .name("USER")
                         .createdOn(dateUtil.now())
+                        .deleted(false)
                         .build();
                 var perm2 = Permission.builder()
                         .name("ADMIN")
+                        .deleted(false)
                         .createdOn(dateUtil.now())
                         .build();
 
@@ -170,6 +181,7 @@ public class InitialDataConfig {
                         .isCredentialsExpired(false)
                         .createdOn(dateUtil.now())
                         .userPermissions(new HashSet<>())
+                        .deleted(false)
                         .build();
 
                 admin.linkPermissions(Set.of(perm2));
@@ -187,6 +199,7 @@ public class InitialDataConfig {
                         .isCredentialsExpired(false)
                         .createdOn(dateUtil.now())
                         .userPermissions(new HashSet<>())
+                        .deleted(false)
                         .build();
                 manager.linkPermissions(Set.of(perm1));
                 userRepository.save(admin);

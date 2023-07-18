@@ -7,9 +7,7 @@ import com.bujikun.fsd.capstone.eHealthcare.security.repository.TokenRepository;
 import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -19,6 +17,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class TokenService {
     private final JwtEncoder jwtEncoder;
+    private final JwtDecoder jwtDecoder;
     private final TokenRepository tokenRepository;
     private final DateUtil dateUtil;
     public AuthDTO generateToken(Authentication authentication){

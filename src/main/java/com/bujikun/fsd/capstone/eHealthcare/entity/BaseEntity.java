@@ -39,5 +39,7 @@ public class BaseEntity {
     private Instant updatedOn;
     @Column("version")
     private Integer version;
+    @Column("deleted")
+    private Boolean deleted;
 
 }

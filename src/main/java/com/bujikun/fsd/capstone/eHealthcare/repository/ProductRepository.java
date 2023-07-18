@@ -40,7 +40,7 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
    FROM `products`
    JOIN products_categories pc on products.id = pc.fk_product_id
    JOIN categories c on pc.fk_category_id = c.id
-   WHERE `products`.id = :id
+   WHERE `products`.id = :id AND `products`.deleted = 0
 """)
     Optional<ProductDTO> findOneById(@Param("id") UUID id);
     @Query("SELECT COUNT(*) FROM products")

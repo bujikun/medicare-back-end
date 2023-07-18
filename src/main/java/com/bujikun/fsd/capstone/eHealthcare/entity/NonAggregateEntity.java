@@ -21,4 +21,6 @@ public  class NonAggregateEntity<T,U> {
     @LastModifiedDate
     @Column("updated_on")
     private Instant updatedOn;
+    @Column("deleted")
+    private Boolean deleted;
 }
