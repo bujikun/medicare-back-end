@@ -71,7 +71,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                // .cors(cors->cors.configurationSource(corsConfigurationSource))
-                .securityMatcher("/api/v1/**")
+                .securityMatcher("/api/v1/**","/auth/introspect","/auth/invalidate")
                 .authorizeHttpRequests(
                         reqs -> reqs
                                 .anyRequest().authenticated()
