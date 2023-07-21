@@ -1,9 +1,9 @@
 package com.bujikun.fsd.capstone.eHealthcare.service;
 
-import com.bujikun.fsd.capstone.eHealthcare.config.dto.CategoryDTO;
 import com.bujikun.fsd.capstone.eHealthcare.config.dto.SellerDTO;
-import com.bujikun.fsd.capstone.eHealthcare.entity.Category;
+import com.bujikun.fsd.capstone.eHealthcare.entity.Seller;
 import com.bujikun.fsd.capstone.eHealthcare.repository.CategoryRepository;
+import com.bujikun.fsd.capstone.eHealthcare.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,26 +15,26 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CategoryService implements IBaseService<Category, UUID>{
-    private final CategoryRepository categoryRepository;
+public class SellerService implements IBaseService<Seller, UUID>{
+    private final SellerRepository sellerRepository;
 
     @Override
-    public List<Category> findAll() {
+    public List<Seller> findAll() {
         return null;
     }
 
     @Override
-    public Optional<Category> findById(UUID uuid) {
+    public Optional<Seller> findById(UUID uuid) {
         return Optional.empty();
     }
 
     @Override
-    public Category save(Category category) {
+    public Seller save(Seller seller) {
         return null;
     }
 
     @Override
-    public boolean update(Category category) {
+    public boolean update(Seller seller) {
         return false;
     }
 
@@ -42,11 +42,12 @@ public class CategoryService implements IBaseService<Category, UUID>{
     public void deleteById(UUID uuid) {
 
     }
-    public List<CategoryDTO> getAll(){
-        return categoryRepository.getAll();
+
+    public List<SellerDTO> getAll(){
+        return sellerRepository.getAll();
     }
     @Override
     public Integer getCount() {
-        return categoryRepository.getCount();
+        return sellerRepository.getCount();
     }
 }

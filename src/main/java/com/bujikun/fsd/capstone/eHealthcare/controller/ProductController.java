@@ -1,15 +1,13 @@
 package com.bujikun.fsd.capstone.eHealthcare.controller;
 
 import com.bujikun.fsd.capstone.eHealthcare.config.dto.ProductDTO;
+import com.bujikun.fsd.capstone.eHealthcare.entity.Product;
 import com.bujikun.fsd.capstone.eHealthcare.exceptions.product.ProductNotFoundException;
 import com.bujikun.fsd.capstone.eHealthcare.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +17,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO){
+        return  ResponseEntity.ok().body(productService.create(productDTO));
+    }
+    @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> update(@RequestBody ProductDTO productDTO){
+
+        return  ResponseEntity.accepted().body(productService.updateProduct(productDTO)?"{'success':true}":"{'success':false}");
+    }
+    @PutMapping("/image")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> updateImageUrl(@RequestBody ProductDTO productDTO){
+        return  ResponseEntity.accepted().body(productService.updateProductImage(productDTO)?"{'success':true}":"{'success':false}");
+    }
     @GetMapping
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<List<ProductDTO>> findAll(){
@@ -36,7 +50,7 @@ public class ProductController {
         }
         return ResponseEntity.ok()
                 .body(productService.findOneById(uuid)
-                        .orElseThrow(()->new ProductNotFoundException("Product with ID: "+uuid.toString()+" " +
+                        .orElseThrow(()->new ProductNotFoundException("Product with ID: "+uuid+" " +
                                 "could not be found"))
                 );
     }

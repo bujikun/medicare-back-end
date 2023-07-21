@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @SuperBuilder

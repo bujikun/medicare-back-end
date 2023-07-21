@@ -1,16 +1,16 @@
 package com.bujikun.fsd.capstone.eHealthcare.repository;
 
-import com.bujikun.fsd.capstone.eHealthcare.config.dto.CategoryDTO;
 import com.bujikun.fsd.capstone.eHealthcare.config.dto.SellerDTO;
 import com.bujikun.fsd.capstone.eHealthcare.entity.Category;
+import com.bujikun.fsd.capstone.eHealthcare.entity.Seller;
 import org.springframework.data.jdbc.repository.query.Query;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface CategoryRepository extends BaseRepository<Category, UUID>{
-    @Query("SELECT COUNT(*) FROM categories")
+public interface SellerRepository extends BaseRepository<Seller, UUID>{
+    @Query("SELECT COUNT(*) FROM sellers")
     Integer getCount();
-    @Query("SELECT name AS category_name,id FROM categories")
-    List<CategoryDTO> getAll();
+    @Query("SELECT name AS seller_name,id FROM sellers")
+    List<SellerDTO> getAll();
 }

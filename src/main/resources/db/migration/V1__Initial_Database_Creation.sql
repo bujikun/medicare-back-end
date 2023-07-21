@@ -10,6 +10,22 @@ SET NAMES utf8mb4;
 # DROP DATABASE IF EXISTS `e_healthcare`;
 # CREATE DATABASE `e_healthcare` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION = 'N' */;
 USE `e_healthcare`;
+DROP TABLE IF EXISTS `sellers`;
+CREATE TABLE `sellers`
+(
+    `id`         BINARY(16)            NOT NULL,
+    `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `version`    int      DEFAULT NULL,
+    `deleted`     bit(1)   DEFAULT 0,
+    `created_on` datetime(6)                                                  NOT NULL,
+    `updated_on` datetime DEFAULT NULL,
+    `created_by`       varchar(50) DEFAULT NULL,
+    `last_modified_by`       varchar(50) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `UK_pnvtdsdsdwliipn6ida3ndjrqt2` (`name`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products`
@@ -17,7 +33,7 @@ CREATE TABLE `products`
     `id`         BINARY(16)            NOT NULL,
     `name`       varchar(255)   NOT NULL,
     `price`      decimal(10, 2) NOT NULL,
-    `img_url`    varchar(1000)  NOT NULL,
+    `img_url`    varchar(1000)   NULL,
     `description`    varchar(1000)  NOT NULL,
     `deleted`     bit(1)   DEFAULT 0,
     `created_on` datetime(6)    NOT NULL,
@@ -47,6 +63,7 @@ CREATE TABLE `categories`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
 
+
 DROP TABLE IF EXISTS `products_categories`;
 CREATE TABLE `products_categories`
 (
@@ -59,6 +76,22 @@ CREATE TABLE `products_categories`
     KEY `FKbvwr8podneeiefx7agb3y6w` (`fk_category_id`),
     CONSTRAINT `FKaeu88selaevs59733qluau` FOREIGN KEY (`fk_product_id`) REFERENCES `products` (`id`),
     CONSTRAINT `FKbvwr8podnb6u53eeiefx7a` FOREIGN KEY (`fk_category_id`) REFERENCES `categories` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS `products_sellers`;
+CREATE TABLE `products_sellers`
+(
+    `fk_product_id`        BINARY(16)          NOT NULL,
+    `fk_seller_id`  BINARY(16)          NOT NULL,
+    `deleted`     bit(1)   DEFAULT 0,
+    `created_on`       datetime(6) NOT NULL,
+    `updated_on`       datetime DEFAULT NULL,
+    PRIMARY KEY (`fk_product_id`, `fk_seller_id`),
+    KEY `FKbvwr8podndaadadeeiefx7agb3y6w` (`fk_seller_id`),
+    CONSTRAINT `FKaeu88dadaselaevs59733qluau` FOREIGN KEY (`fk_product_id`) REFERENCES `products` (`id`),
+    CONSTRAINT `FKbvwr8paasdsodnb6u53eeiefx7a` FOREIGN KEY (`fk_seller_id`) REFERENCES `sellers` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;

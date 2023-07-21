@@ -1,7 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.service;
 
 import com.bujikun.fsd.capstone.eHealthcare.entity.Category;
-import com.bujikun.fsd.capstone.eHealthcare.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

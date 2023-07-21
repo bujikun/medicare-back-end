@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
  * @since 2023
  */
 
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @SuperBuilder

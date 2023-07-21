@@ -1,6 +1,9 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
@@ -17,9 +20,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
-@Table(name = "products_categories")
-public class ProductCategory extends NonAggregateEntity<Category,UUID>{
-    @Column("fk_category_id")
-    private AggregateReference<Category, UUID> categoryId;
+@Table(name = "products_sellers")
+public class ProductSeller extends NonAggregateEntity<Seller,UUID>{
+    @Column("fk_seller_id")
+    private AggregateReference<Seller, UUID> sellerId;
 
 }
