@@ -17,7 +17,6 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class TokenService {
     private final JwtEncoder jwtEncoder;
-    private final JwtDecoder jwtDecoder;
     private final TokenRepository tokenRepository;
     private final DateUtil dateUtil;
     public AuthDTO generateToken(Authentication authentication){
@@ -41,7 +40,6 @@ public class TokenService {
         tokenRepository.save(token);
         return AuthDTO.builder()
                 .token(jwtTokenValue)
-                .email(ud.getEmail())
                 .fullname(ud.getFullname())
                 .accountNumber(ud.getAccountNumber())
                 .role((String) ud.getPermissionNames().toArray()[0])

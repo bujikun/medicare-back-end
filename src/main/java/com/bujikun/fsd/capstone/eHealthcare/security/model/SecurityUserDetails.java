@@ -19,7 +19,6 @@ public class SecurityUserDetails implements UserDetails {
     private String username;
     private String password;
     private String fullname;
-    private String email;
     private String accountNumber;
     private Boolean isAccountLocked;
     private Boolean isAccountExpired;

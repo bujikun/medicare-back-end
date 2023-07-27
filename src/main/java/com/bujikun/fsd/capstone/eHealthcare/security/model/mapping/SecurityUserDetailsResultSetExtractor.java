@@ -22,7 +22,6 @@ public class SecurityUserDetailsResultSetExtractor implements ResultSetExtractor
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("fullname"),
-                        rs.getString("email"),
                         rs.getString("account_number"),
                         rs.getBoolean("is_account_locked"),
                         rs.getBoolean("is_account_expired"),

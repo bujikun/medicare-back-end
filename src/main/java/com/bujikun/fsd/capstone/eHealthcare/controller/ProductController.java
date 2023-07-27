@@ -1,7 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.controller;
 
 import com.bujikun.fsd.capstone.eHealthcare.config.dto.ProductDTO;
-import com.bujikun.fsd.capstone.eHealthcare.entity.Product;
 import com.bujikun.fsd.capstone.eHealthcare.exceptions.product.ProductNotFoundException;
 import com.bujikun.fsd.capstone.eHealthcare.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +37,12 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> findAll(){
         return ResponseEntity.ok().body(productService.findAllWithCategory());
     }
+
+    @GetMapping("/shop")
+    public ResponseEntity<List<ProductDTO>> findAllForShopping(){
+        return ResponseEntity.ok().body(productService.findAllWithCategory());
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<ProductDTO> findOne(@PathVariable("id")String id){

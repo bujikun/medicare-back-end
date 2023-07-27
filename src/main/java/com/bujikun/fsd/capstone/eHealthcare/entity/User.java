@@ -1,6 +1,7 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
 import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.*;
@@ -9,6 +10,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,8 +31,8 @@ public class User extends BaseEntity{
     private String password;
     private String firstname;
     private String lastname;
-    private String email;
     @Column("account_number")
+    @JsonProperty("account_number")
     private String accountNumber;
     @Column("is_account_locked")
     private Boolean isAccountLocked;
@@ -40,6 +42,7 @@ public class User extends BaseEntity{
     private Boolean isCredentialsExpired;
     @Column("is_enabled")
     private Boolean isEnabled;
+    private BigDecimal balance;
     @MappedCollection(idColumn = "fk_user_id",keyColumn = "fk_permission_id")
     private Set<UserPermission> userPermissions;//many to many! for user actions
     @Transient

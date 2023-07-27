@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface PermissionRepository extends BaseRepository<Permission, UUID>{
     //Set<Perm>
+    Permission findByName(String name);
 }

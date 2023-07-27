@@ -27,6 +27,9 @@ public class ProductService implements IBaseService<Product, UUID> {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+    public List<ProductDTO> findAllAvailable() {
+        return productRepository.findAllAvailable();
+    }
 
     @Override
     public Optional<Product> findById(UUID uuid) {

@@ -74,6 +74,8 @@ public class SecurityConfig {
                 .securityMatcher("/api/v1/**","/auth/introspect","/auth/invalidate")
                 .authorizeHttpRequests(
                         reqs -> reqs
+                                .requestMatchers("/api/v1/users",HttpMethod.POST.name()).permitAll()
+                                .requestMatchers("/api/v1/products/shop").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
