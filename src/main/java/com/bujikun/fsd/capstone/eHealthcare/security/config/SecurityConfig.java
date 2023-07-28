@@ -76,6 +76,7 @@ public class SecurityConfig {
                         reqs -> reqs
                                 .requestMatchers("/api/v1/users",HttpMethod.POST.name()).permitAll()
                                 .requestMatchers("/api/v1/products/shop").permitAll()
+                                .requestMatchers("/api/v1/products/search").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

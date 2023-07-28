@@ -114,4 +114,8 @@ return op;
     public List<ProductDTO> findAllWithCategory(){
         return productRepository.findAllWithCategory();
     }
+    public List<ProductDTO> search(String query){
+        return productRepository.search(query);
+    }
+
 }

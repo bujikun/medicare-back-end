@@ -4,6 +4,7 @@ import com.bujikun.fsd.capstone.eHealthcare.config.dto.ProductDTO;
 import com.bujikun.fsd.capstone.eHealthcare.exceptions.product.ProductNotFoundException;
 import com.bujikun.fsd.capstone.eHealthcare.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
     private final ProductService productService;
     @PostMapping
@@ -42,6 +44,11 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> findAllForShopping(){
         return ResponseEntity.ok().body(productService.findAllWithCategory());
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> search(@RequestParam("q")String queryString){
+        log.error(queryString);
+        return ResponseEntity.ok().body(productService.search(queryString));
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
@@ -59,4 +66,6 @@ public class ProductController {
                                 "could not be found"))
                 );
     }
+
+
 }

@@ -78,4 +78,15 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
     Optional<ProductDTO> findOneById(@Param("id") UUID id);
     @Query("SELECT COUNT(*) FROM products")
     Integer getCount();
+
+    @Query("""
+            SELECT * FROM products p
+                        WHERE
+                        name LIKE CONCAT('%',:query,'%')
+                        OR description 
+                        LIKE CONCAT('%',:query,'%')
+                        OR p.price LIKE CONCAT('%',:query,'%') AND deleted=false
+            """
+    )
+    List<ProductDTO> search(@Param("query") String query);
 }
