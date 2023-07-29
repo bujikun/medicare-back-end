@@ -51,7 +51,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<ProductDTO> findOne(@PathVariable("id")String id){
         UUID uuid;
         try{

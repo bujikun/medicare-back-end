@@ -52,6 +52,7 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
    JOIN categories c on pc.fk_category_id = c.id
    JOIN products_sellers ps on products.id = ps.fk_product_id
    JOIN sellers s on ps.fk_seller_id = s.id
+   WHERE `products`.deleted = false
 """)
     List<ProductDTO> findAllWithCategory();
     @Query("""
