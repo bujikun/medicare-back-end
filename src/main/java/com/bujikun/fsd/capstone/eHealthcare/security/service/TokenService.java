@@ -39,7 +39,10 @@ public class TokenService {
                 .build();
         tokenRepository.save(token);
         return AuthDTO.builder()
+                .userId(ud.getId())
                 .token(jwtTokenValue)
+                .username(ud.getUsername())
+                .balance(ud.getBalance())
                 .fullname(ud.getFullname())
                 .accountNumber(ud.getAccountNumber())
                 .role((String) ud.getPermissionNames().toArray()[0])

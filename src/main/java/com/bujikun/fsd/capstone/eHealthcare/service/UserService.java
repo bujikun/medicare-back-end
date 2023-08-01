@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.service;
 
+import com.bujikun.fsd.capstone.eHealthcare.config.dto.UserDTO;
 import com.bujikun.fsd.capstone.eHealthcare.entity.Permission;
 import com.bujikun.fsd.capstone.eHealthcare.entity.User;
 import com.bujikun.fsd.capstone.eHealthcare.exceptions.user.UserExistsException;
@@ -33,9 +34,13 @@ public class UserService implements IBaseService<User, UUID> {
 
     @Override
     public Optional<User> findById(UUID uuid) {
-        return Optional.empty();
-    }
 
+         return userRepository.findById(uuid);
+    }
+    public UserDTO findOneById(UUID uuid) {
+        var u = findById(uuid).orElseThrow(()-> new UserNotFoundException("User Not Found"));
+        return UserDTO.fromUser(u,util);
+    }
     public User findByUsername(String username) {
         return userRepository.findUserByUsername(username)
                 .orElseThrow(()-> new UserNotFoundException("User Not Found"));
@@ -69,6 +74,6 @@ public class UserService implements IBaseService<User, UUID> {
 
     @Override
     public Integer getCount() {
-        return null;
+        return userRepository.getCount();
     }
 }

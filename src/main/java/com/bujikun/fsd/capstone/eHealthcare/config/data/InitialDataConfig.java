@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Configuration(proxyBeanMethods = false)
+//@Configuration(proxyBeanMethods = false)
 public class InitialDataConfig {
     @Bean
     public CommandLineRunner commandLineRunner(ProductRepository productRepository,
@@ -22,12 +22,13 @@ public class InitialDataConfig {
                                                PermissionRepository permissionRepository,
                                                CategoryRepository categoryRepository,
                                                SellerRepository sellerRepository,
+                                               OrderRepository orderRepository,
                                                DateUtil dateUtil,
                                                PasswordEncoder passwordEncoder
     ) {
         return args -> {
             try {
-
+                orderRepository.deleteAll();
                 userRepository.deleteAll();
                 permissionRepository.deleteAll();
                 productRepository.deleteAll();
@@ -206,7 +207,7 @@ public class InitialDataConfig {
                         .deleted(false)
                         .build();
 
-                admin.linkPermissions(Set.of(perm2));
+                admin.linkPermissions(Set.of(perm1,perm2));
 
                 var manager = User.builder()
                         .username("user")

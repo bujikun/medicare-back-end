@@ -8,17 +8,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class SecurityUserDetails implements UserDetails {
+    private UUID id;
     private String username;
     private String password;
     private String fullname;
+    private BigDecimal balance;
     private String accountNumber;
     private Boolean isAccountLocked;
     private Boolean isAccountExpired;

@@ -11,9 +11,12 @@ import java.util.UUID;
 
 public interface SecurityUserRepository extends BaseRepository<User, UUID> {
     @Query(value = """
-            SELECT username,
+            SELECT
+            users.id,
+            username,
                    password,
                    concat(firstname," ",lastname) as fullname,
+                   balance,
                    account_number,
                    is_account_expired,
                    is_account_locked,

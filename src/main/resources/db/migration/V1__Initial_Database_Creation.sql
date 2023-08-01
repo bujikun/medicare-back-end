@@ -116,9 +116,9 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`
 (
     `id`         BINARY(16)            NOT NULL,
-    `order_number`   varchar(255) NOT NULL,
     `fk_user_id`  BINARY(16)           NOT NULL,
     `customer_name`  varchar(100) NOT NULL,
+    `total_price`      decimal(10, 2) NOT NULL,
     `deleted`     bit(1)   DEFAULT 0,
     `created_on`     datetime(6)  NOT NULL,
     `updated_on`     datetime(6) DEFAULT NULL,
@@ -126,7 +126,6 @@ CREATE TABLE `orders`
     `last_modified_by`       varchar(50) DEFAULT NULL,
     `version`        int         DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `order_number` (`order_number`),
     KEY `customer_id` (`fk_user_id`),
     CONSTRAINT `order_ibfk_1` FOREIGN KEY (`fk_user_id`) REFERENCES `users` (`id`)
 ) ENGINE = InnoDB

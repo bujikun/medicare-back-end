@@ -17,11 +17,11 @@ import java.util.UUID;
 @ReadingConverter
 @NoArgsConstructor
 public class TimeToStringConverter implements  Converter<LocalDateTime,String> {
-    private static final String DATE_TIME_PATTERN = "dd-MM-yyyy HH:mm:ss";
+    private static final String DATE_TIME_PATTERN = "dd-MM-uuuu HH:mm:ss";
 
     @Override
     public String convert(LocalDateTime source) {
-        //spring reads from db as localdatetime instead of instant
+        //spring data jdbc reads from db as localdatetime instead of instant
         var formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
         return formatter.format(source);
     }

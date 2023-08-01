@@ -13,12 +13,18 @@ import java.util.*;
 public class HomeService{
     private final CategoryService categoryService;
     private final ProductService productService;
+    private final UserService userService;
+    private final OrderService orderService;
 
     public List<HashMap<String,String>> fetchHomeItems(){
         var list = new ArrayList<HashMap<String,String>>();
         HashMap<String, String> o = getMap("Products","Currently in stock",productService.getCount());
         list.add(o);
         o = getMap("Product Categories","Available",categoryService.getCount());
+        list.add(o);
+        o = getMap("Users ","Active",userService.getCount());
+        list.add(o);
+        o = getMap("Orders","Placed",categoryService.getCount());
         list.add(o);
         return list;
     }
