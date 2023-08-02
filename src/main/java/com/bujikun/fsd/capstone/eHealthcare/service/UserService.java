@@ -30,8 +30,6 @@ public class UserService implements IBaseService<User, UUID> {
         return userRepository.findAll();
     }
 
-
-
     @Override
     public Optional<User> findById(UUID uuid) {
 

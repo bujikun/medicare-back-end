@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface CategoryRepository extends BaseRepository<Category, UUID>{
     @Query("SELECT COUNT(*) FROM categories")
     Integer getCount();
-    @Query("SELECT name AS category_name,id FROM categories")
+    @Query("SELECT name AS category_name,id,created_on FROM categories")
     List<CategoryDTO> getAll();
 }
