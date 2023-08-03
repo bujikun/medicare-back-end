@@ -5,241 +5,333 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
+USE `e_healthcare`;
+
 SET NAMES utf8mb4;
 
-# DROP DATABASE IF EXISTS `e_healthcare`;
-# CREATE DATABASE `e_healthcare` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION = 'N' */;
-USE `e_healthcare`;
-DROP TABLE IF EXISTS `sellers`;
-CREATE TABLE `sellers`
-(
-    `id`         BINARY(16)            NOT NULL,
-    `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `version`    int      DEFAULT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `created_on` datetime(6)                                                  NOT NULL,
-    `updated_on` datetime DEFAULT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_pnvtdsdsdwliipn6ida3ndjrqt2` (`name`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
-
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE `products`
-(
-    `id`         BINARY(16)            NOT NULL,
-    `name`       varchar(255)   NOT NULL,
-    `price`      decimal(10, 2) NOT NULL,
-    `img_url`    varchar(1000)   NULL,
-    `description`    varchar(1000)  NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `created_on` datetime(6)    NOT NULL,
-    `updated_on` datetime(6) DEFAULT NULL,
-    `version`    int         DEFAULT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
 DROP TABLE IF EXISTS `categories`;
-CREATE TABLE `categories`
-(
-    `id`         BINARY(16)            NOT NULL,
-    `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `version`    int      DEFAULT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `created_on` datetime(6)                                                  NOT NULL,
-    `updated_on` datetime DEFAULT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_pnvtwliipn6ida3ndjrqt2` (`name`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+CREATE TABLE `categories` (
+                              `id` binary(16) NOT NULL,
+                              `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                              `version` int DEFAULT NULL,
+                              `deleted` bit(1) DEFAULT b'0',
+                              `created_on` datetime(6) NOT NULL,
+                              `updated_on` datetime DEFAULT NULL,
+                              `created_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                              `last_modified_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                              PRIMARY KEY (`id`),
+                              UNIQUE KEY `UK_pnvtwliipn6ida3ndjrqt2` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `categories` (`id`, `name`, `version`, `deleted`, `created_on`, `updated_on`, `created_by`, `last_modified_by`) VALUES
+                                                                                                                                (UNHEX('7E98551090CF4DD8B4620549B1A11A0D'),	'Gloves',	NULL,	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                (UNHEX('8DF057C3D91949BD92ABC06F4268EE5F'),	'Toothbrushes',	NULL,	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                (UNHEX('C6226BC750B341A7A2C1D0BB3FB8E3B3'),	'Medicines',	NULL,	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                (UNHEX('E950EEB86746488CA8F3CF519D08FB6D'),	'Syringes',	NULL,	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL);
 
-DROP TABLE IF EXISTS `products_categories`;
-CREATE TABLE `products_categories`
-(
-    `fk_product_id`        BINARY(16)          NOT NULL,
-    `fk_category_id`  BINARY(16)          NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `created_on`       datetime(6) NOT NULL,
-    `updated_on`       datetime DEFAULT NULL,
-    PRIMARY KEY (`fk_product_id`, `fk_category_id`),
-    KEY `FKbvwr8podneeiefx7agb3y6w` (`fk_category_id`),
-    CONSTRAINT `FKaeu88selaevs59733qluau` FOREIGN KEY (`fk_product_id`) REFERENCES `products` (`id`),
-    CONSTRAINT `FKbvwr8podnb6u53eeiefx7a` FOREIGN KEY (`fk_category_id`) REFERENCES `categories` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+DROP TABLE IF EXISTS `flyway_schema_history`;
+CREATE TABLE `flyway_schema_history` (
+                                         `installed_rank` int NOT NULL,
+                                         `version` varchar(50) DEFAULT NULL,
+                                         `description` varchar(200) NOT NULL,
+                                         `type` varchar(20) NOT NULL,
+                                         `script` varchar(1000) NOT NULL,
+                                         `checksum` int DEFAULT NULL,
+                                         `installed_by` varchar(100) NOT NULL,
+                                         `installed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                         `execution_time` int NOT NULL,
+                                         `success` tinyint(1) NOT NULL,
+                                         PRIMARY KEY (`installed_rank`),
+                                         KEY `flyway_schema_history_s_idx` (`success`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-DROP TABLE IF EXISTS `products_sellers`;
-CREATE TABLE `products_sellers`
-(
-    `fk_product_id`        BINARY(16)          NOT NULL,
-    `fk_seller_id`  BINARY(16)          NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `created_on`       datetime(6) NOT NULL,
-    `updated_on`       datetime DEFAULT NULL,
-    PRIMARY KEY (`fk_product_id`, `fk_seller_id`),
-    KEY `FKbvwr8podndaadadeeiefx7agb3y6w` (`fk_seller_id`),
-    CONSTRAINT `FKaeu88dadaselaevs59733qluau` FOREIGN KEY (`fk_product_id`) REFERENCES `products` (`id`),
-    CONSTRAINT `FKbvwr8paasdsodnb6u53eeiefx7a` FOREIGN KEY (`fk_seller_id`) REFERENCES `sellers` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+INSERT INTO `flyway_schema_history` (`installed_rank`, `version`, `description`, `type`, `script`, `checksum`, `installed_by`, `installed_on`, `execution_time`, `success`) VALUES
+                                                                                                                                                                                (1,	'1',	'Initial Database Creation',	'SQL',	'V1__Initial_Database_Creation.sql',	1455997331,	'root',	'2023-08-02 06:59:45',	260,	1),
+                                                                                                                                                                                (2,	'2',	'Seed Data',	'SQL',	'V2__Seed_Data.sql',	-1419944147,	'root',	'2023-08-02 06:59:45',	37,	1);
 
 DROP TABLE IF EXISTS `order_items`;
-CREATE TABLE `order_items`
-(
-    `product_name`   varchar(255)   NOT NULL,
-    `unit_price`  decimal(10, 2) NOT NULL,
-    `quantity`    int            NOT NULL,
-    `fk_order_id`  BINARY(16)             NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    KEY `order_id` (`fk_order_id`),
-    CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`fk_order_id`) REFERENCES `orders` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE `order_items` (
+                               `product_name` varchar(255) NOT NULL,
+                               `unit_price` decimal(10,2) NOT NULL,
+                               `quantity` int NOT NULL,
+                               `fk_order_id` binary(16) NOT NULL,
+                               `deleted` bit(1) DEFAULT b'0',
+                               KEY `order_id` (`fk_order_id`),
+                               CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`fk_order_id`) REFERENCES `orders` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-TRUNCATE `order_items`;
+INSERT INTO `order_items` (`product_name`, `unit_price`, `quantity`, `fk_order_id`, `deleted`) VALUES
+                                                                                                   ('SYRINGE INTRALIGAMENTAL 1.8ML EURO THREAD',	20.55,	5,	UNHEX('A1A62C2839B24812A41DA489CA61A3E2'),	CONV('0', 2, 10) + 0),
+                                                                                                   ('Cura-Heat Back and Shoulder Pain 3 Heat Packs',	2.77,	4,	UNHEX('031C6D09B62A4881A8549D45EF650C98'),	CONV('0', 2, 10) + 0),
+                                                                                                   ('TEPE NOVA SOFT TOOTHBRUSH 80 PACK',	15.99,	4,	UNHEX('031C6D09B62A4881A8549D45EF650C98'),	CONV('0', 2, 10) + 0),
+                                                                                                   ('Cura-Heat Back and Shoulder Pain 3 Heat Packs',	2.77,	1,	UNHEX('37A8C805C61A4D83A7E34DF8BA843097'),	CONV('0', 2, 10) + 0),
+                                                                                                   ('Dermovate (Clobetasol Propionate) 0.05% Cream',	7.50,	18,	UNHEX('37A8C805C61A4D83A7E34DF8BA843097'),	CONV('0', 2, 10) + 0),
+                                                                                                   ('Colgate',	10.00,	5,	UNHEX('D609E1B78E64468E8532DEC6DBFE6253'),	CONV('0', 2, 10) + 0),
+                                                                                                   ('Dermovate (Clobetasol Propionate) 0.05% Cream',	7.50,	6,	UNHEX('EFA71EA3ECFE4339B302D13464A72545'),	CONV('0', 2, 10) + 0);
 
 DROP TABLE IF EXISTS `orders`;
-CREATE TABLE `orders`
-(
-    `id`         BINARY(16)            NOT NULL,
-    `fk_user_id`  BINARY(16)           NOT NULL,
-    `customer_name`  varchar(100) NOT NULL,
-    `total_price`      decimal(10, 2) NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `created_on`     datetime(6)  NOT NULL,
-    `updated_on`     datetime(6) DEFAULT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    `version`        int         DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `customer_id` (`fk_user_id`),
-    CONSTRAINT `order_ibfk_1` FOREIGN KEY (`fk_user_id`) REFERENCES `users` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE `orders` (
+                          `id` binary(16) NOT NULL,
+                          `fk_user_id` binary(16) NOT NULL,
+                          `customer_name` varchar(100) NOT NULL,
+                          `total_price` decimal(10,2) NOT NULL,
+                          `deleted` bit(1) DEFAULT b'0',
+                          `created_on` datetime(6) NOT NULL,
+                          `updated_on` datetime(6) DEFAULT NULL,
+                          `created_by` varchar(50) DEFAULT NULL,
+                          `last_modified_by` varchar(50) DEFAULT NULL,
+                          `version` int DEFAULT NULL,
+                          PRIMARY KEY (`id`),
+                          KEY `customer_id` (`fk_user_id`),
+                          CONSTRAINT `order_ibfk_1` FOREIGN KEY (`fk_user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE `roles`
-(
-    `id`         BINARY(16)            NOT NULL,
-    `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `version`    int      DEFAULT NULL,
-    `created_on` datetime(6)                                                  NOT NULL,
-    `updated_on` datetime DEFAULT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_pnvtwliis6p05dapn6i3ndjrqt2` (`name`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+INSERT INTO `orders` (`id`, `fk_user_id`, `customer_name`, `total_price`, `deleted`, `created_on`, `updated_on`, `created_by`, `last_modified_by`, `version`) VALUES
+                                                                                                                                                                  (UNHEX('031C6D09B62A4881A8549D45EF650C98'),	UNHEX('FC19FD13D8A94DF992915221C40E9898'),	'admin admin',	75.04,	CONV('0', 2, 10) + 0,	'2023-08-01 00:17:48.000000',	NULL,	NULL,	NULL,	NULL),
+                                                                                                                                                                  (UNHEX('37A8C805C61A4D83A7E34DF8BA843097'),	UNHEX('FC19FD13D8A94DF992915221C40E9898'),	'admin admin',	137.77,	CONV('0', 2, 10) + 0,	'2023-08-01 10:54:09.000000',	NULL,	NULL,	NULL,	NULL),
+                                                                                                                                                                  (UNHEX('A1A62C2839B24812A41DA489CA61A3E2'),	UNHEX('FC19FD13D8A94DF992915221C40E9898'),	'admin admin',	102.75,	CONV('0', 2, 10) + 0,	'2023-08-01 00:17:21.000000',	NULL,	NULL,	NULL,	NULL),
+                                                                                                                                                                  (UNHEX('D609E1B78E64468E8532DEC6DBFE6253'),	UNHEX('FC19FD13D8A94DF992915221C40E9898'),	'admin admin',	50.00,	CONV('0', 2, 10) + 0,	'2023-08-03 09:59:50.000000',	NULL,	NULL,	NULL,	NULL),
+                                                                                                                                                                  (UNHEX('EFA71EA3ECFE4339B302D13464A72545'),	UNHEX('FC19FD13D8A94DF992915221C40E9898'),	'admin admin',	45.00,	CONV('0', 2, 10) + 0,	'2023-08-03 14:44:25.000000',	NULL,	NULL,	NULL,	NULL);
 
 DROP TABLE IF EXISTS `permissions`;
-CREATE TABLE `permissions`
-(
-    `id`         BINARY(16)            NOT NULL,
-    `name`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `version`    int      DEFAULT NULL,
-    `created_on` datetime(6)                                                  NOT NULL,
-    `updated_on` datetime DEFAULT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_pnvtwliis6p05pn6ida3ndjrqt2` (`name`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+CREATE TABLE `permissions` (
+                               `id` binary(16) NOT NULL,
+                               `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                               `deleted` bit(1) DEFAULT b'0',
+                               `version` int DEFAULT NULL,
+                               `created_on` datetime(6) NOT NULL,
+                               `updated_on` datetime DEFAULT NULL,
+                               `created_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                               `last_modified_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                               PRIMARY KEY (`id`),
+                               UNIQUE KEY `UK_pnvtwliis6p05pn6ida3ndjrqt2` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-DROP TABLE IF EXISTS `tokens`;
-CREATE TABLE `tokens`
-(
-    `id`         BINARY(16)            NOT NULL,
-    `value`       varchar(1000) NOT NULL,
-    `username`    varchar(50)   NOT NULL,
-    `invalidated` bit(1)        NOT NULL,
-    `version`     int DEFAULT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `created_on`  datetime(6)   NOT NULL,
-    `updated_on`  datetime(6)   DEFAULT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+INSERT INTO `permissions` (`id`, `name`, `deleted`, `version`, `created_on`, `updated_on`, `created_by`, `last_modified_by`) VALUES
+                                                                                                                                 (UNHEX('0A1105A198FB4428894278D33AB2F634'),	'USER',	CONV('0', 2, 10) + 0,	NULL,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                 (UNHEX('5967FBC7766D43C0A3FAD1C9FA544381'),	'ADMIN',	CONV('0', 2, 10) + 0,	NULL,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL);
 
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE `products` (
+                            `id` binary(16) NOT NULL,
+                            `name` varchar(255) NOT NULL,
+                            `price` decimal(10,2) NOT NULL,
+                            `img_url` varchar(1000) DEFAULT NULL,
+                            `description` varchar(1000) NOT NULL,
+                            `deleted` bit(1) DEFAULT b'0',
+                            `created_on` datetime(6) NOT NULL,
+                            `updated_on` datetime(6) DEFAULT NULL,
+                            `version` int DEFAULT NULL,
+                            `created_by` varchar(50) DEFAULT NULL,
+                            `last_modified_by` varchar(50) DEFAULT NULL,
+                            PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users`
-(
-    `id`         BINARY(16)            NOT NULL ,
-    `username`               varchar(50)   NOT NULL,
-    `password`               varchar(255)  NOT NULL,
-    `firstname`     varchar(255) NOT NULL,
-    `lastname`      varchar(255) NOT NULL,
-    `account_number` varchar(100) NOT NULL,
-    `is_account_locked`      bit(1)                                                        NOT NULL,
-    `is_account_expired`     bit(1)                                                        NOT NULL,
-    `is_credentials_expired` bit(1)                                                        NOT NULL,
-    `is_enabled`             bit(1)                                                        NOT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    `balance`      decimal(10, 2) NOT NULL,
-    `version`                int      DEFAULT NULL,
-    `updated_on`             datetime DEFAULT NULL,
-    `created_on`             datetime(6)                                                   NOT NULL,
-    `created_by`       varchar(50) DEFAULT NULL,
-    `last_modified_by`       varchar(50) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_r43af9ap4edm43mmtq01oddj6` (`username`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+INSERT INTO `products` (`id`, `name`, `price`, `img_url`, `description`, `deleted`, `created_on`, `updated_on`, `version`, `created_by`, `last_modified_by`) VALUES
+                                                                                                                                                                 (UNHEX('0D1651A24BEE41528FB8C9E57D0C7878'),	'Syringe Intraligamental 1.8ml Euro Thread',	20.55,	'https://medicare-bucket-001.s3.us-east-1.amazonaws.com/1691062813857--5644298a-8dcd-47d6-bd60-3fd35fdbd9a0.jpeg',	'Syringes for Intraligamental Anaesthesia\n(4962 - 4963 - 4964)\nThe intraligament anaesthesia technique is used for the treatment of individual teeth by means of an injection between the alveolar crest and the tooth root. With this technique the needle is inserted through the gingival sulcus into the periodontal space along the mesial or distal surface of the tooth: the anaesthetic solution must be injected slowly keeping a constant and moderate pressure to facilitate the distribution of the liquid. Contraindicated in presence of deep periodontal pockets and gingival acute infection. ',	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	'2023-08-03 14:40:16.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                                 (UNHEX('1829FF024BE34870A4155349E36399F1'),	'Protec Latex Powder Free Small Gloves',	10.00,	'https://medicare-bucket-001.s3.us-east-1.amazonaws.com/1691061845635--7988a6c0-824c-4636-9f4b-34e2aa01ef28.jpeg',	'Powder Free Latex Gloves - Latex Exam Gloves.\nPrice is for a Carton of 10 boxes of 100 designed for use in medical areas where protection from blood borne infection is essential.\n    Ambidextrous fitting.\n    Up to five sizes available.\n    High production standards to TGA and FDA requirements from an ISO audited supplier.\n    No Powdered Gloves for people with allergies to conventional glove powders.\n    Each of the three types are coloured coded for easy identification.\n    Perspex Gloves box dispensers available\n',	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	'2023-08-03 14:34:27.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                                 (UNHEX('6183F94A300841E68553E006883CC471'),	'Dermovate (Clobetasol Propionate) 0.05% Cream',	7.50,	'https://medicare-bucket-001.s3.us-east-1.amazonaws.com/1691062680118--57545ca9-34be-475d-809a-6bd53558fd7e.jpeg',	'If you suffer from chronic skin flare ups and other corticosteroid creams have not worked, Dermovate could help. \n\nWith OxfordOnlinePharmacy it is easier than ever to get your Dermovate prescription online: no waiting times, no hassle.\n\nDermovate is a strong topical steroid which is effective in the treatment of severe skin conditions such as eczema and psoriasis.\n\nDermovate is a cream that contains the active ingredient Clobetasol Propionate, which is a topical corticosteroid (topical means that it is applied direct to affected area, and a corticosteroid reduces inflammation). Dermovate is stronger than other corticosteroids which is only available on prescription. Dermovate is only to be used when other steroid creams have not been effective.',	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	'2023-08-03 14:38:02.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                                 (UNHEX('845CEA8132FE4909917EF31CFF421199'),	'Cura-Heat Back and Shoulder Pain 3 Heat Packs',	2.77,	'https://medicare-bucket-001.s3.us-east-1.amazonaws.com/1691062744683--47dfc10c-f71f-495d-9662-7ec99d931df4.jpeg',	'Cura-Heat Back & Shoulder Pain 3 Heat Packs is a heat patch which gives 12 hour relief from muscles and joint aches and pains. It works by increasing the blood circulation in the area which in turn reduces the stiffness and relaxes the sore muscles. Cura-Heat Back & Shoulder Pain can be bought from OxfordPharmacyOnline.',	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	'2023-08-03 14:39:06.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                                 (UNHEX('EC9A68C1F73A4E6197074EAC44D77C65'),	'Tepe Nova Soft Toothbrush 80 Pack',	15.99,	'https://medicare-bucket-001.s3.us-east-1.amazonaws.com/1691062519501--dfff0d35-dc96-47f4-bc39-fd5567687a11.jpeg',	'Nova has a tapered brush head with an active tip for increased access. It is specially efficient around the posterior teeth and other difficult to reach areas. The end-rounded filaments ensure gentle cleaning. Non-slip handle with thumb pad. Neck can be angled without heating. Blue tip: medium, yellow tip: soft, pink tip: x-soft. ',	CONV('0', 2, 10) + 0,	'2023-08-01 00:16:08.000000',	'2023-08-03 14:35:22.000000',	NULL,	NULL,	NULL);
 
-DROP TABLE IF EXISTS `users_permissions`;
-CREATE TABLE `users_permissions`
-(
-    `fk_user_id`        BINARY(16)          NOT NULL,
-    `fk_permission_id`  BINARY(16)          NOT NULL,
-    `created_on`       datetime(6) NOT NULL,
-    `updated_on`       datetime DEFAULT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    PRIMARY KEY (`fk_user_id`, `fk_permission_id`),
-    KEY `FKbvwr8podnb6u53eeiefx7agb3y6w` (`fk_permission_id`),
-    CONSTRAINT `FKaeu8lc9yh8selaevs59733qluau` FOREIGN KEY (`fk_user_id`) REFERENCES `users` (`id`),
-    CONSTRAINT `FKbvwr8podnb6u53eeiefx7agb3y6w` FOREIGN KEY (`fk_permission_id`) REFERENCES `permissions` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+DROP TABLE IF EXISTS `products_categories`;
+CREATE TABLE `products_categories` (
+                                       `fk_product_id` binary(16) NOT NULL,
+                                       `fk_category_id` binary(16) NOT NULL,
+                                       `deleted` bit(1) DEFAULT b'0',
+                                       `created_on` datetime(6) NOT NULL,
+                                       `updated_on` datetime DEFAULT NULL,
+                                       PRIMARY KEY (`fk_product_id`,`fk_category_id`),
+                                       KEY `FKbvwr8podneeiefx7agb3y6w` (`fk_category_id`),
+                                       CONSTRAINT `FKaeu88selaevs59733qluau` FOREIGN KEY (`fk_product_id`) REFERENCES `products` (`id`),
+                                       CONSTRAINT `FKbvwr8podnb6u53eeiefx7a` FOREIGN KEY (`fk_category_id`) REFERENCES `categories` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `products_categories` (`fk_product_id`, `fk_category_id`, `deleted`, `created_on`, `updated_on`) VALUES
+                                                                                                                 (UNHEX('0D1651A24BEE41528FB8C9E57D0C7878'),	UNHEX('E950EEB86746488CA8F3CF519D08FB6D'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                                 (UNHEX('1829FF024BE34870A4155349E36399F1'),	UNHEX('7E98551090CF4DD8B4620549B1A11A0D'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                                 (UNHEX('6183F94A300841E68553E006883CC471'),	UNHEX('C6226BC750B341A7A2C1D0BB3FB8E3B3'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                                 (UNHEX('845CEA8132FE4909917EF31CFF421199'),	UNHEX('C6226BC750B341A7A2C1D0BB3FB8E3B3'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                                 (UNHEX('EC9A68C1F73A4E6197074EAC44D77C65'),	UNHEX('8DF057C3D91949BD92ABC06F4268EE5F'),	NULL,	'2023-08-01 00:16:08.000000',	NULL);
+
+DROP TABLE IF EXISTS `products_sellers`;
+CREATE TABLE `products_sellers` (
+                                    `fk_product_id` binary(16) NOT NULL,
+                                    `fk_seller_id` binary(16) NOT NULL,
+                                    `deleted` bit(1) DEFAULT b'0',
+                                    `created_on` datetime(6) NOT NULL,
+                                    `updated_on` datetime DEFAULT NULL,
+                                    PRIMARY KEY (`fk_product_id`,`fk_seller_id`),
+                                    KEY `FKbvwr8podndaadadeeiefx7agb3y6w` (`fk_seller_id`),
+                                    CONSTRAINT `FKaeu88dadaselaevs59733qluau` FOREIGN KEY (`fk_product_id`) REFERENCES `products` (`id`),
+                                    CONSTRAINT `FKbvwr8paasdsodnb6u53eeiefx7a` FOREIGN KEY (`fk_seller_id`) REFERENCES `sellers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `products_sellers` (`fk_product_id`, `fk_seller_id`, `deleted`, `created_on`, `updated_on`) VALUES
+                                                                                                            (UNHEX('0D1651A24BEE41528FB8C9E57D0C7878'),	UNHEX('589D60FD03B54B4AA0147EAD0DDD02D1'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                            (UNHEX('1829FF024BE34870A4155349E36399F1'),	UNHEX('629269FF521843AABB7ADB8858CE6CFE'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                            (UNHEX('6183F94A300841E68553E006883CC471'),	UNHEX('589D60FD03B54B4AA0147EAD0DDD02D1'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                            (UNHEX('845CEA8132FE4909917EF31CFF421199'),	UNHEX('629269FF521843AABB7ADB8858CE6CFE'),	NULL,	'2023-08-01 00:16:08.000000',	NULL),
+                                                                                                            (UNHEX('EC9A68C1F73A4E6197074EAC44D77C65'),	UNHEX('589D60FD03B54B4AA0147EAD0DDD02D1'),	NULL,	'2023-08-01 00:16:08.000000',	NULL);
+
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+                         `id` binary(16) NOT NULL,
+                         `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                         `deleted` bit(1) DEFAULT b'0',
+                         `version` int DEFAULT NULL,
+                         `created_on` datetime(6) NOT NULL,
+                         `updated_on` datetime DEFAULT NULL,
+                         `created_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                         `last_modified_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                         PRIMARY KEY (`id`),
+                         UNIQUE KEY `UK_pnvtwliis6p05dapn6i3ndjrqt2` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 DROP TABLE IF EXISTS `roles_permissions`;
-CREATE TABLE `roles_permissions`
-(
-    `fk_role_id`        BINARY(16)          NOT NULL,
-    `fk_permission_id`  BINARY(16)          NOT NULL,
-    `created_on`       datetime(6) NOT NULL,
-    `updated_on`       datetime DEFAULT NULL,
-    `deleted`     bit(1)   DEFAULT 0,
-    PRIMARY KEY (`fk_role_id`, `fk_permission_id`),
-    KEY `FKbvwr8podnbwedwdw6u53eeiefx7agb3y6w` (`fk_permission_id`),
-    CONSTRAINT `FKaeu8lc9yh8sela8757evs59733qluau` FOREIGN KEY (`fk_role_id`) REFERENCES `roles` (`id`),
-    CONSTRAINT `FKbvwr8podnb6u53e6fsdeiefx7agb3y6w` FOREIGN KEY (`fk_permission_id`) REFERENCES `permissions` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_general_ci;
+CREATE TABLE `roles_permissions` (
+                                     `fk_role_id` binary(16) NOT NULL,
+                                     `fk_permission_id` binary(16) NOT NULL,
+                                     `created_on` datetime(6) NOT NULL,
+                                     `updated_on` datetime DEFAULT NULL,
+                                     `deleted` bit(1) DEFAULT b'0',
+                                     PRIMARY KEY (`fk_role_id`,`fk_permission_id`),
+                                     KEY `FKbvwr8podnbwedwdw6u53eeiefx7agb3y6w` (`fk_permission_id`),
+                                     CONSTRAINT `FKaeu8lc9yh8sela8757evs59733qluau` FOREIGN KEY (`fk_role_id`) REFERENCES `roles` (`id`),
+                                     CONSTRAINT `FKbvwr8podnb6u53e6fsdeiefx7agb3y6w` FOREIGN KEY (`fk_permission_id`) REFERENCES `permissions` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+DROP TABLE IF EXISTS `sellers`;
+CREATE TABLE `sellers` (
+                           `id` binary(16) NOT NULL,
+                           `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                           `version` int DEFAULT NULL,
+                           `deleted` bit(1) DEFAULT b'0',
+                           `created_on` datetime(6) NOT NULL,
+                           `updated_on` datetime DEFAULT NULL,
+                           `created_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                           `last_modified_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                           PRIMARY KEY (`id`),
+                           UNIQUE KEY `UK_pnvtdsdsdwliipn6ida3ndjrqt2` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `sellers` (`id`, `name`, `version`, `deleted`, `created_on`, `updated_on`, `created_by`, `last_modified_by`) VALUES
+                                                                                                                             (UNHEX('589D60FD03B54B4AA0147EAD0DDD02D1'),	'100mg',	NULL,	NULL,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                             (UNHEX('629269FF521843AABB7ADB8858CE6CFE'),	'Johnson& Johnson',	NULL,	NULL,	'2023-08-01 00:16:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                             (UNHEX('708B6C170E4942ABA0046425470829A3'),	'Medicare',	NULL,	CONV('0', 2, 10) + 0,	'2023-08-03 13:43:08.000000',	NULL,	NULL,	NULL);
+
+DROP TABLE IF EXISTS `tokens`;
+CREATE TABLE `tokens` (
+                          `id` binary(16) NOT NULL,
+                          `value` varchar(1000) NOT NULL,
+                          `username` varchar(50) NOT NULL,
+                          `invalidated` bit(1) NOT NULL,
+                          `version` int DEFAULT NULL,
+                          `deleted` bit(1) DEFAULT b'0',
+                          `created_on` datetime(6) NOT NULL,
+                          `updated_on` datetime(6) DEFAULT NULL,
+                          `created_by` varchar(50) DEFAULT NULL,
+                          `last_modified_by` varchar(50) DEFAULT NULL,
+                          PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `tokens` (`id`, `value`, `username`, `invalidated`, `version`, `deleted`, `created_on`, `updated_on`, `created_by`, `last_modified_by`) VALUES
+                                                                                                                                                        (UNHEX('006ACCFE1F1F4EEE822A94FA258C07DC'),	'eyJraWQiOiJmODg2MDRmYS0yODgxLTQ2MWMtYjA3Ny0wZTExYTkyNWM1N2EiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMTA0NDEsImlhdCI6MTY5MTAwODY0MX0.Fq9gizL40eqqFR5XZgE71UupTYxP5xsFw--PsO6784ESs9iU-MKvDgdKabGx8ni8OIu0OADhDNk5LfxTBviH2lw7Kq-hVXWGUh5IrFVSUkb9vJ1EcyWrsXy7mvVVuebNoavGfOiyjoDP91iuOLQCXzzcT89P3NIFVHas-skX1cH_cSFW3mjG5R_11v2Tp0F-HvGuREdd-hh_NGoa6zQFR578Ozj1zrazRPYLEB9TXK6ah9MAiNYEZ2Qzwgdmfxf4W6vnuGPwYZI58LJoxmag6UcExToEdd8C4OBw0aUfgmti3GfdBS9orHe8Y4zCN8qC4lzPNK-7c64oYgdP5_QD3g',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 23:37:21.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('0B8B0CA7C3ED433D8E9BFCCEFB24381C'),	'eyJraWQiOiI1Nzc5ZGJkYS04MmZiLTRiNGYtYTVjYy05NjgyNjk1ZjBjNGYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTY4ODksImlhdCI6MTY5MTA1NTA4OX0.nperwhanV_qfx-VewWOAanQHxr0XalAnYQsKVX7vVSr6TtTUjWCxHVwxAbBAOsZJhEv4ib5ESPNRiOqQ_CVMkKchbPo9vBg-4C0IOiM8_FdZwoZ_Ck8TWUcmzBPs0SOm2W2KOpSfhr1dehO_UUxl6swdi3YeRTW_-jbx4dMOykTiVrzIN0Xu89vqT_TJY07SGG79xbSm6bdHcuDPalLmDZ-S_avHgbIfuZCd_-zZDE3GWtrBMZxOFayVrsQi_6m9dG1BjQPh7gQCYEn35ELn2c4uAP-7cFTcSE6HFuG83o9uDFOHuHJbf7wAAuOAfeoOpd-gAKh7o5FM6G4OsZ_3ow',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 12:31:29.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('0BAD07979A19425DBF2A2C55C2282B7D'),	'eyJraWQiOiI3MzhmYmQ1Ny1hMzUzLTRiYzMtYjFmNS0wMTBlMDk1OWVmNDEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDcyMTYsImlhdCI6MTY5MTAwNTQxNn0.f5TP8PGI87wUJr15w3VtswrSKNlbiyBz8QTC1-q-uz-5fUqiAfM19yywdxotpBInexwQghP_I7OqxTC-Tbdl5EUb0OkTCRuGVq1KVPeENqqU4BHXUm4xK-hzxfjKKQ3QFWI__hpet8Xg542wqBO_I_VnGTufAEdqpmB7IkFXSQWNmNHH3NsVDUtHVJywhJib594KbHZQbMTath6ZQkzs3SVbKM9mcoAeobAWd-bQCzfwYSSdtgya3xz5BlgxgLlKh-H4w3oMFs_KPkJmfA2l1gTY_rKyol1wOF0vWAKvx99bIqVzeCznjyMr8ByUzcTrRh9DNTEvlUX7Jb9fK1atQQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 22:43:36.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('0C46485309D34C66BCC643E80B4D83A4'),	'eyJraWQiOiJhNjU2NzJmZS05YjM0LTQzNDktOGU2Yi1iOTExZTIyMGNmYTgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTYxNDgsImlhdCI6MTY5MDk5NDM0OH0.HdhyHjVD-OlVqmfsI5M_-KWBQyUIjAfCKbP0sVkbprbhqysrci2oYop0EiNUKFviJD_50HYoGrY2WmBm_hIVeKYtJlS_1On2vkZvgocVQ0GskHe-aAOt-zo3gHNaGkO-2Lf4N9rPCyWmruD_qTNK4RdkrQQFXdBDyit5i96ZVZ-H2z26S2Ij5OePCAfgAwK_YPR3bGYmHsyUbDTyNxAp71yC9RZisk9h8ddS-TiJOdH5sPDXruIPcHbj1iTlwzrV7vijA4EuP2nDlLbkIc_btEA0OIPwPtVxuqclfkxaM_cAnL4P2ANlFhMKQjpaGsGuJ6kGzyV-dX_zTey7Q-fxlw',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 19:39:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('10C85AAB32D944158FBDF7AD988D6E54'),	'eyJraWQiOiJiMGVmZjkwYS1iNzY3LTQxNmEtYmE4NS1kZGVlMWYwMjNkNDAiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTI5NzUsImlhdCI6MTY5MTA1MTE3NX0.EfcYDkKqgsUjThnjKEq5BsuaulFJUlTCI3N2pH3gMvA5G2SGR7ANCDZYrymU5zprnke4UuWFrtXPUiIyAbS4Ciy7UtZt5hKotLvdyIyffEbqQP9FgBpP5Ld2RWk88FqA5RUgY-s6crM8ZNSpLFXzAwyNcRy2uN0aJD29zMPC00_Dfeum6Slh1ffTyg5x9mMbCy4xhOU2IG8JeFFBLN-Er5at7nZEGxw9Bniv5C_KeOqL02x9ZjfcfG3w5-FoY6vrWmISTm8y1K8GPuQATDTaZUxTTqFM7nDbJJ4EbtgbCHqh8Qc8szxMorURVJszNtpJrVDbUnQ4uYiRSFIgxF2r4g',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 11:26:15.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('16DC9D1189D148A5A6677893264B3F2F'),	'eyJraWQiOiI0NzA1MTQwYi02MjAzLTQ0YTYtODBlYi00ZGU0YjY4NjllNzgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTQ4MzksImlhdCI6MTY5MTA1MzAzOX0.eDAdTKZI9FycYr1xJ7TnQPw9bBuB76w4hcRyOoUAZK3GVbttBzYZxzZM2NOnJuw3mbstrZaTCxiUGua1uwVN2fUn9KKJjMYbOXESHK3OEzX2XHwQDlGph4OZOZ1meZmIe6OqFHPPu5-9maQ5mtRMD_JnI61UL6nGkwis7DBvEq1yx7Z90g-t7Nz4KnrHeBAtQd2L4F4h_A8-intN5BwDlICrgddUbJo1ChMx7P45q_gq_6H2ytzSBrNLkI5tqwVn285oHacj4_qR4u1Rrf0HRLKscXeLCh2Fvfp7q176lH6aqgFbpnSdBykWcGXwwpxRR97hAxgzQ60yGxmi4l6QHg',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 11:57:19.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('174C5AC0E3D74826BC4BB64DE6FA5FB0'),	'eyJraWQiOiJiMWVjYTg5NC00NDAzLTQ1YWUtODI5Yi1jNDQ5YWMzYTNmZTUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMTExNTksImlhdCI6MTY5MTAwOTM1OX0.uIQmTgfj0WOv8N92GJyvk4ol5Rpenfv89nzeVnIt0sdvx93ENfk_XYfSn9Z-teuuPSK41Y8MEYFCmGAPkhswlV5R6CyP-AYQA1IQe0S0aMApTVyFvMDLnGqRd3gSoVX7kmrox3OdwppicLbdwcIsf9b4d_DZAu4IL57zWc6SPg-dyIZJaFDohohH96kbrRXTqGZeUhWk8DU-phhqRqEy1cja70ZH6z0l2UgzLmkuE_gd8awhQnF_l5SiqWuQBXZhb-h1g1F7MPsPVXv2tfzhVm-WmrQsCmq610tIJNDe9RLVuFy3kW1351IeZBtrGe64kFhepAqK62nFaTjMB8UIJQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 23:49:19.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('1DCFA595ADC94501B757EB219FA5DF9B'),	'eyJraWQiOiI2OTQwOGExZS0zN2M2LTRiMDktOWY5Yy0yODkxZTZmY2Y0OWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5ODY2MDYsImlhdCI6MTY5MDk4NDgwNn0.VowRgNMSHA2ogzXiSlAHFu_V7fGwdUWJtj95aKe6Nr2zRvXVr_jfYoBPh5EUVVXzF__hP0kCqyNE675qx-2ogHLuC0Nf0J79-Wcpvr95S7eme6Lk4xCxT82raO8U1gjruEOIQEheom85X0UaGMb0B1mjUHYg0ILc1vISlJRW80Mhf2OQ9ExwzvO5HEOk9ZFthZopq5FaUz3-rHo4OkseHOUMhvEsubV7h2BfhwzDjZJRounCvItlByoRCcAXyv7QwU-PBiFaNg2pcaGT8us6r2cOssMkDtlo3G55qHGBYZe059MQowvlrRxXYlWYX4XMXECAoYyPvuPjVP6z_My2Gg',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 17:00:06.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('248306403C334A5989807A4C4F6AD64F'),	'eyJraWQiOiIyMzUxMjY3NC04YWE5LTQyNTctYjgyYi1iNDZhMDQwMWEyNWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDc0OTYsImlhdCI6MTY5MTAwNTY5Nn0.fqEb45yf9Yd8NVyfqPA5rnWXryt2947AhgeuglMhN5AuGWxIFk1Lp_RqmqlyTHCYSWYt2u55QA8ebBkPQ5a4vdVrDetWJP0v6X4ODAi7GU1iae4Bi_dcsZrrOR42ZZxaVhxu0u-NvwGnGqibAlwIuPhTqyZKEbfy0l3NNuvIY3YWoRq0oS9MDwh8XzQjg2LaAGtfmXxUC_PPbpiwpglU5LE1Or4PBJwzj16HISi5h99dmD6dC1TjGnhpWSyRKRtfrEIPtx0-jMW0isI5x2nOtZBc_J-_Q9vecJQSBegFRJBrYVZ2Xi-Ab4gSNCwSLLVQAuoHn6_jlC1HEolLPIdpCA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 22:48:16.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('26A1286C9BC7477CA07F2C3F71488DA7'),	'eyJraWQiOiJkM2RkOWI5YS1lNmRjLTQ3NjAtOWRkOC1jOTBiYjUwNzc0ZDciLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDA2NDksImlhdCI6MTY5MDk5ODg0OX0.1RR3LKdvdGkRtAbLmXY5q9PFaOVQoYX4Y-211d8Zc_1K63tk48XAB0sylkFzk-Z9aDubvKpoNpL7T_kSY-NmvP2BsytUfm4DVfLDCmOKolgdfehD_G0JbZGAWXav2cxSuVFCe5wHeb14rCa-7pLNeYBOk73XgOsQv6SZxozzVuvgBRYZtjZa3k4lJyzfTx5T6X8iSKBRP3QIq2AAdfoGnL1FwvgM5noMWduohNM22_eqITWKcPvq5FGxxOkzdeD8XJcziyLwx0-GVs8WyZgKqQfFn02xnKIIORL_K1NnAQYkBtz3dDlQwqBb2g595CWMvDEm-iL7nqSH4QQWasif3A',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 20:54:09.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('26EA26A5221D4702990587DF231EB2C5'),	'eyJraWQiOiI0ZTBkNTM0Yy01NjhmLTRjMWItYjI4OC0yNmI4ZjJhZjZjMWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNDU5ODgsImlhdCI6MTY5MTA0NDE4OH0.gf1aBfi820bRtE5Oq3SoBmQqNLDd20NFeyCV7v0U4xBbn7jyveMOIPfxffRdHm-SAMTDjuZ9tZUW1HX9-0pL6_htooY9e8X6Dk-Gpt2b0-RuNnFFp0JxleqFPVAkGcvRq-9-S67iGR-R_pB6rYlHXQ2ZaIY2MMjjSfq-b3Oqpuj84Ne0M7d9aXUBLoXNnzN38hIPChIKV8s8I-ryRFrFyf8fHSmDdzhmKtG1SewuBYc4LmKyZUIpwHYrSa57KmwBw6OIqyYivTrvVBzWkWg0jSOWGroAp8Fs7tRqV1RFNSuTyh_REH68fSjJbUnX_6nU1ES3fVo-txXNdUy8_4a7_Q',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 09:29:48.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('2A15E7FE759E4CC9A3CBFFBEB8F1B51A'),	'eyJraWQiOiJhZTcwNTUxOC1lNDNjLTQ2YzAtYTM3MC1hNmRhOTg0YzRhNGIiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTUwMjcsImlhdCI6MTY5MTA1MzIyN30.n9gp3bsDflLom3GFBo0B2CaI5hV0ntmxWh2lnGAs2FUhPuwkvr6Fr6fgzvLWIeAhuCR3IoFCzBLYBYwv6Xn7c5ILoeGtxKIHXPRZO5l2yWe80oFGrwxuHSzYDD1IwXF-s7988fE0Azx4G_JSJpAdZpjUyJxIQci-ExLPcT4p3DMKfKWoopaKeHPWo2n5JdrcIs6gb7vzQhS-M6MmDyY8YChmRbgYqTar-VuT8oR9ObeiedgTPoEcTnW8MILsM7jbmSb1sHCSpAc0uWmXLKoA2NSPtoSCkNTE2nqpI-h0HRCJytWyGNgiulVrl9UCji6Bc3gDLep6lnLnrISIvOZpJA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 12:00:27.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('34021288B5984313A58471B487844D0C'),	'eyJraWQiOiI3NDUyOWJhNy1hZjQwLTQwODctYjFkMi05NWYzMDM3MWEyMTUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5Nzg1MTgsImlhdCI6MTY5MDk3NjcxOH0.yIoAAOxE8yLAv1jbwXBIH053mqMvG7jpI9PIMP5vRF_5EqK-vstnWNYyL_RJbc77cKnhK9yOpVdIb2HfNVbkQD5nX8IbmnNAFVblSZGVs2IXmzDHZmT9V61hWpoNK-GfeqALKDBkLolGkstQ-3k6Xyf9FK9nE2pZ91LaYn285b9xqysq1l_d4BR5vRFh3bFsERkT193fJJXphAfL9bfRf0o9q8EfM0SOmuvk_JYHg_sQASOx7ODHNM80nChxIDmAbAm67gWEUIYdUR2uFkcY1TmbcYFyepH4C1eSUWVRembsPS_bwNRFEFfWZgz9lr3vUS-ZMvySj5G6K0TWLOJXEg',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 14:45:18.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('367D7F181F30437C99B21EA5953B9515'),	'eyJraWQiOiJmODg2MDRmYS0yODgxLTQ2MWMtYjA3Ny0wZTExYTkyNWM1N2EiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDg1MzQsImlhdCI6MTY5MTAwNjczNH0.jSzg5L3j4MKITrb4DTZR6Dexli6PFkN9a1WfGtZDUQZU_rlZtnzdKjdPBZQi-u9bOoSYKp-SNhjOG6IxtcWsw5zp2Z_p2vKEqdykj0AdKzf4u9sbtqfu3x6aaWF2uk-jKaxbujFddIaiHO0iC4LmO0WCBA_0fudZsSdYXY4k7Kawkt80EuUzj_0vK4Ha8EGmXqT5eYYEOWiAsw0jHkJbAm-64wjrHMHZTL6cpnImHCJj7MkcSgEI3BsfVG4rKPG2gR1-WBDiF_g-dYoc0ASQz3K6iQINukkTdPGfCHs_gzYlmircmG5ci3zZayU7uujbd-Ba52I-gj9yszffM8NbeA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 23:05:34.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('43CBE97D62F44D65A843DD40352B92B3'),	'eyJraWQiOiI5YTg3ZmI4OC05Mjc3LTRkNDEtOWY2Ny01ZGJkODY3MjYwZTkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTE4NjIsImlhdCI6MTY5MTA1MDA2Mn0.vEevqGAPcfm6B3bqpzSGLaW88YyU3BEk3ttJ0L1wZszm67nFTVEUBiMuWJQavV2Nml93iCCOTI-B7KRQDoc6zvaUIfRhX-BH3tqV_87m4zadbaxJQ9FzvfW_JIi9rx3O_K7HXnB-_pqAUnXw_ky9a5GPeGvmYjciLhwpLdXUp0t89D_JAvx9iySzfrjiKjFxvAI2Z0hlmU6pomD_XhgneOWNHtC0US5gJgyf3UwuFE07gUW-GL2506rgIkdxlSpkYibQ5_8FfZUhVyvcvEgkS0tekWkuSeiey7znp9I07gIQH_2ijjGBKlW7O9AU_KqtEVgS_CYJBodXDEhH4ju3zw',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 11:07:42.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('43D527E30B0F486CB1F513E988A299D1'),	'eyJraWQiOiI3MWY5NjA5YS1kZjI4LTQwOGEtOWI4Zi1lNjA2MjRkN2Y4YTUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDM1ODMsImlhdCI6MTY5MTAwMTc4M30.K-L1IZ1kYfU2D6OzFhPxMypz9zxV8ChMdT1Zj5genz1gCzgSl6fIYo7wMnh5-yjEu31XVb9htRfONtG06wF_6VXmb4uO_NfY_dJb5lSg2NP5VE7kS0C6KE-9rS5VUf5uunrdoATo80FM1lW2kq5OGufb5GaKxjAjAKv2An5J_pgb-sOdGc6Y-PLi-Uv_tREC5KxjsFNr5zHf1StPIcN23XzFqD4tHX6FGXaFPjeQ5DTRoqsY4CZHQ5o26YfZmJduN5W-fGje0WrSA43vWSPwGIo1Ygt9zqNUNt_Wlj9nNCfibxte-r1DhOJI2X4E5Ik2jbZX6YqM0m2kxC5-UTcEWA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 21:43:03.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('458A0E4D2F04418BA4DF5E04E5B00AD9'),	'eyJraWQiOiI4ZTJiZTk2NS0xYmVlLTQ1ZWMtODdiNC1jMjcwOGQzMmIwZDgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5ODY5NDksImlhdCI6MTY5MDk4NTE0OX0.dcoOUCbL-MbsEMEcXLU4cbOuCtmn4SDZw5JdECXbokw-bFcnlm8c9XpBHfEp7tKgwgWjkoUQ7D_b13jaceUO37HNmBCT5OXlbS2AGliygssc-sXkjR2aEFpSQ1ceYc-xL5F_XXVI0QJ0tfi3-7HAYlIPSLOmKkDYzXmEeS6lgV7_6pd9ATDj8ziqBg9PksxUvgoj3UjT-oU13ZQdvlucv6aZQELmeCEPhz4NUBwmVcXv5jO-rugEghr0mXbJnzpI2iZNKRJ5Lnn2jhQtGwMG9LOTSwizOo6xpmKubDCZg5i-zoR66clM3yyQOuq21W3Sgz80SvAl_WoV-7lUfZeH1A',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 17:05:49.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('471AD8319FD54C9F93D34DB4BA804F0C'),	'eyJraWQiOiI5MWQ4NDg0NS05MDhkLTQwY2EtYWJmOC00NDgwNjFjYTY4NzQiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTUyMDEsImlhdCI6MTY5MTA1MzQwMX0.K9VQygumxrSa9wQ1p6sSIve3-OZlUDbSt9U1XdY1ajbj3-wR5_2BTW65yqcUDH4KfZPecO-sbHeaa7D7wSEJ2Xl5QyE8WkuCpaZ8_HRluLmLLOk_aBX04Wff7Xvq5wRVrdjAJHBEYEUxtbLgxH50G01lteRMOXc5ZV6cw6qDMpCbeQpIeyJVbwOsFNYUkxAyHNPEiR3uPWZNXP9qJQYBMvot2CG-fgG07t45boNsBWvmW-yKq_XI6jh2KRQy4vSWzxcmF2f2mCUa9sJRiuS1OA_SPwI_6yU8NImIpH0Cv6_CXeCoBeuSgob5YRt2TOCJ5uAq2094UR6W494K6xV85w',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 12:03:21.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('4D2A0B59A813452E86A93F05FA587D31'),	'eyJraWQiOiI0ZTNmN2Y3MS1lYzA0LTQ1YWUtOWZmOS1iYzg4MTlhMjEyN2QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTgwNjAsImlhdCI6MTY5MDk5NjI2MH0.kbwVVY9qdai81PY0faXHd3TBVNjdfGVF-6UXmX86-DI-ouLoqJuloMtEv8o_6JqGcaFdFzI2nhoJq4vLWqvzEv3UWS2utDThY9YovCardWd227GDNc6jlzBnY8tNJgoXC7q6VDyDZ9l_00MiLrSqSQuE0IwD2c_XtpmS775dGmawZVJZVmIL5kuDPs2GNuwJl_0eSbChEpYmq3ABe7LzWJAYAaNLNCa9NSvIHIH22o2hqpTxd9GnFC4KBRpKFPXYuklexOBlvmM_a5Kc_oBG3ULV__t2Fh9VXeHc22XsmrtXlkHK-9kNkUCtXh38dvMunc_kp8HjqgQoQR5ifIQebQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 20:11:00.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('52261BB1591F4BD58230741454D8D996'),	'eyJraWQiOiI4NDViM2Y0Yy1mNTExLTQwMzItOTI3ZS0xMmRiMjE2ZDExNjgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDcxMDEsImlhdCI6MTY5MTAwNTMwMX0.EwLr4e20Yk3CLeZRmgq_d6EwiSxFZAAP4rMhpGPpNxey8qUuONAK-lja_90EX3AjbbSP4dlmzld4VEOvEqXGMeKMurm6QsIQq36dDY5dp8dz0qgSsEHK1i3iZEJbMslGK9p6_y2ABmoOcuCrdhAfrVEZ6utQ9U2G8rLuUcPYtwFtXj80S_wiaTOFkOEiFWDsKA22jnmU3_IFGvLjLYgiOq9t7gCePQHUf_LuYYe1iLup90JrPvtf8sub5mR2XHtqyUj_UgwGKvFNKRYSzWnIC5rgtDAu_OVyT4MDoc947Nqrctqf0_F_KRBQL7raokBKuZSjIJBEuavjjg6Lv7P3GA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 22:41:41.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('5434190A90504F35BC409799B96AAAAD'),	'eyJraWQiOiIwMTFhY2E2MC0wZjA2LTQ0YTItYTI1NS1mY2U1NmFjZWVlMzEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDE1MDMsImlhdCI6MTY5MDk5OTcwM30.GGmXFeV_XsAEFb84_8vKrTS0K4hJpPDR60ejjULgaDDzZvGQVjZfk2l7yd5II2lzIrzn0vHatVacDr-hwaNMoWetfUQDNqrYQLBe-n_mHcPRjrQFoOMoNTWQi9ITXn07dLK1mZRMW0VeiS9iF5wrHt2BsjRGjjpzwnDVSAAJMKvRw8-rsEwTd14M2mKj2Nz8vao8ixsSumraZy3iiKMSqYJkTqGq02qxWOdwoiU2Otnx4lAkuFYeL9H5FoZtg1bja9EkmOZUR2mDyyW83kcKKFFQdEI_1H1umUMIgMfVEu3Rti-liQkzpSlaxAmyJl72wj9-e57S4RjFm9-3Th_ZnQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 21:08:23.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('57D77048B878411AB56E3C8EBA3A5279'),	'eyJraWQiOiI4ZTJiZTk2NS0xYmVlLTQ1ZWMtODdiNC1jMjcwOGQzMmIwZDgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTMzODgsImlhdCI6MTY5MDk5MTU4OH0.iMBbj_o_-02cY4IMIxjTflB-WCLMlXClPppL6G3_XVXQY0sPJ_P9sx9SLb186JVMMVzwjE-p9alCJNiXV6B-XsO9uQpzcMkTRgHdmOQfVPP1Fut_kJBoIEB4DZFx8RWct_qr9QjEZyrigwbR6w_qaudaocxxL85_XeMvulSgM37QXDu-tvq6TnXtdwhjU8l-AUh9I4nPLZRPryzGUV7b0dBr--sYJjwqwBoqyFTyMoWAmMyjbZr81tNJIf8CNmhieYWj2P0i3sqtnh2V8ZHQPZ2IJexf-JeSeQrFVKCQKtDKDPHaEC1pZvi0ereEsJKgsx8AeW-ubY1fBirprGV_1A',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 18:53:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('5870423A45BC4DF396A0C8801DFC2072'),	'eyJraWQiOiI1MzViOTViNy1jNGI4LTQzNWUtODY3Yy04ODA1OTYxMWRkYTEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDEzNDcsImlhdCI6MTY5MDk5OTU0N30.ESHpW8ysE1sQv3pkq2w_K-xzriJwk2Hu6zZKhWZGaanTN8gIlS_vZKnW6eyvvz3OJAf6C-Lmas_Unf593zlsWlsxtuQZRnOr_XWQ1mPj5M4KG6kkYZV_AwkVZy41zr8YWXCRXYNG5Qe0ptH9THa6eGgh2BOyUxWzosFeAT0mWwO3-oJd2zoSbfVnk3Pzu4RxDNTH5zUEJNFwKCHZZ4ibI14PK2KTWviLE2lyFL4PAFYnpKsI-ML3XTh9dlZtU0IKJUQ16N-Yn1JodzM2hQs8VgK_f4rzjTjv9evJFVEHG14VVyCAMNPnr7Agph7Qd8vihpuwbrLz1VNzG7Ot7alWrg',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 21:05:47.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('5A8C5EA70CB548C686CF3E0D99CBBABF'),	'eyJraWQiOiJjMTFiNTg5ZC1lYzg5LTQwM2YtOTJjYS05NGNhZjY0MGNmZDMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNjEyNDgsImlhdCI6MTY5MTA1OTQ0OH0.WGK7BtAhNCwOaV2Dl_AND_Rhv7w27yzuHyL7cDfx-J1QrMfS_cMnGjYtvv2caSnqw30LNg5ETEN5PmyGnkRiXFBEklbj1YEBjJIF53712xcbaq5FC5C4lV-BdOXHlw1OhE4RADKTWBotCFE-JVMa1Kfc1obuqo1wbjIOQzMtVlX4QDIHeIDMQx98JHL-K6quuRl1me8G9uI1NH4uwYqmz9EWZQYF_JHd1c3vUwqEvEd-8n9irBgPkpvIFwwKp59kPAtj0AVH8tKQcRVG3JuEeblD3s1GSPNcZd9LNGGemdf9nlw7jYPcDCZugRX-zTG63ASPm6I3kVarG49Zo7DEMA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 13:44:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('5CD8073B4B524DE4AB859A07B67E4F76'),	'eyJraWQiOiI4ZTJiZTk2NS0xYmVlLTQ1ZWMtODdiNC1jMjcwOGQzMmIwZDgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTMzODgsImlhdCI6MTY5MDk5MTU4OH0.iMBbj_o_-02cY4IMIxjTflB-WCLMlXClPppL6G3_XVXQY0sPJ_P9sx9SLb186JVMMVzwjE-p9alCJNiXV6B-XsO9uQpzcMkTRgHdmOQfVPP1Fut_kJBoIEB4DZFx8RWct_qr9QjEZyrigwbR6w_qaudaocxxL85_XeMvulSgM37QXDu-tvq6TnXtdwhjU8l-AUh9I4nPLZRPryzGUV7b0dBr--sYJjwqwBoqyFTyMoWAmMyjbZr81tNJIf8CNmhieYWj2P0i3sqtnh2V8ZHQPZ2IJexf-JeSeQrFVKCQKtDKDPHaEC1pZvi0ereEsJKgsx8AeW-ubY1fBirprGV_1A',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 18:53:08.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('5D31F805331C4761BA88BE640666125E'),	'eyJraWQiOiI1ZjliYWI4Yi0wYzkwLTQyZmMtOTc1MS1iMDc4MDMzYTRlNzgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDEwNDksImlhdCI6MTY5MDk5OTI0OX0.cRV5FASHNgfe6wvptIuK0HwuCNs_Yly-VmJtXf12YS3l6Fctgg89hVrp9gz020wX5WaJTSbe1tVw0UfcbeFseqz7NUU7xdlciOZuXgJV4mKz-fjDcpASq7w4ZoMqMwlbox2eRlGX7pxPXvwRffMV_Dix8AliSXxXh09crWrP69e5I927xM39Y4hsMtTGm0tV_obqHcyCSQ6nHwe8ZsNDYrLtaxhtZUDjP33jTM44Wf3ladW2hgesucQBDws8nWPx0kMkztEuYYFsNfsANeuTOYyro5h4j9Kd7jH16ZLCIOcE_Ehg6MCKMtBZR03foBrigHtvNZmY7sS95uRjyzKL8g',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 21:00:49.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('5EFF2BC07C984D708238A539226B18B2'),	'eyJraWQiOiI0OWI4ZTgzZC0wYzY4LTQyZmItYjk0ZS1jOWM0MGExMWU3ODgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTk5MTcsImlhdCI6MTY5MTA1ODExN30.N4RehJeHUuONGs0eDqmq4gFWOQvtNHFS5OBudgwEkkoDCroyDA1UziSkIAsFe-eKoW1RR8mfw4y2umWRRpKXByR32zwgY09gvD1jaF5NoC3bkXpwvaeAIJdTup6eOkb7iKD4C0hhI3KCfic5UNMkY65XaGXFNgKrPmHLL6BeyKOidFJjV9Dym-sqlTdVRFuycZ6F2gSTKILntNiG3Xzw6wV7uOvnD9r1c-02iaC9d-Ce4nFo-89L92N3dZb9Ra-L2IEFlnwKE6LtsS7gjFZMpJQpFFJqT4T1bOzl9ulsx-06EQTxEEwCRJ2T0OncEh7sM3ilQQocFWzLU9R1skzHlA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 13:21:57.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('6752B498FA1949C7B441914125E7935D'),	'eyJraWQiOiI4ZTJiZTk2NS0xYmVlLTQ1ZWMtODdiNC1jMjcwOGQzMmIwZDgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTM0MTIsImlhdCI6MTY5MDk5MTYxMn0.SrYJufFh_VgMGcapzKwOwbvZTbuyJwry69odotWTRwGDTZPJiBE50-ppwbRxiYhXMnft9TuPCPVupHSC52V4Vhq2MD1ZF-UuaqwBQJ0QZNHW8ei3TRBZH-FOIG8UElRiLI_sVqceykNYKJpHZVtAXrPG7YKu0KeaItGFJoZhF6jRHyv1X7AHpHEPGt8FPpVJ6P6DaI8j8gS1NTnfJsWjgFb5UinnTSqZxL4qbpzqMIyRR87RVaYEJs3UJLw4Jy4LV1myw6tINETq5qo8aRlQTV6C6KwQkq74jtndzu3uIKK7afvkJyDXCT-IPaggEv2uoV2w_gQ3iTv4Fej7bJ4Ycw',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 18:53:32.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('76E49A8C54AB49BD91D085E273F86002'),	'eyJraWQiOiJjNmQ4OGNmOS0yMTczLTRlYzctYmU4Zi0xZGNlMWUwYTczZjMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTY3ODIsImlhdCI6MTY5MDk5NDk4Mn0.GCqfxsu2NO2bDawFub85YQ60dfriT0Yh4shXWU3w7iBb0o3Oe8C6eZRVpV1LWLZCKZt9ni6ypWQZDM6gReyUz-DoTKd7zBgjhIfzcIvKpNPK4rrN23wlOUqrQuv-lKht6XBwExFEOgNfoIYev17t_mfDYgnFkJKlU2buCM4NcckeK2zauWnJcPXm7JZN49HaZWnrvW9aOKtK5o5dS_q6B7HoNTDfU5YUOssRSAvxtMZCXGRWUg3Bgm3Cmxo6QJEaFRxvek1txSWJNhNwBP9O8oQJEr_mHJyXjZt15_Jk049aFwRxCBgbS5GIx2NOGb6qNMMvuxSfyjbmctuyTR8RpQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 19:49:42.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('77F77F14397947F8B8413F4E0B924617'),	'eyJraWQiOiJjMTFiNTg5ZC1lYzg5LTQwM2YtOTJjYS05NGNhZjY0MGNmZDMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNjA5NjUsImlhdCI6MTY5MTA1OTE2NX0.T5Rn-KoZGcU4rwQ8WZYFslJRJ5clSyiuONxB3gg1MgGHr3lRIQia4r8iAJ3MSPoBfmnSX9UbTmBhIMaxJTaXRHj74oloGiY-X4kekpPz0BpchQRX_ZIeH2sXQ5Ip2jKghUnbcPdzyQ1a0bTO0phzNs3a8mXXtHPNLDo79yZP9KmvtbQ2FMEOxigBeccKYRv8f6zNgySFD2r8Sf02Mb6XG5hery8jA5OdYbS_zP1D5F3qeus-7fh2mz7V1iQES98XPqo-Jv4_SEo4KkD7WsR0uZFT5JUpugheQNWnMTYIxFZL5mPszI3yuzknmunMDZGcPifn0Rs7JBQ76qDrtqOzAw',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 13:39:25.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('78E0DE6DEF8E4380A8433F326903BB56'),	'eyJraWQiOiI5YTg3ZmI4OC05Mjc3LTRkNDEtOWY2Ny01ZGJkODY3MjYwZTkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTE2NTEsImlhdCI6MTY5MTA0OTg1MX0.Isl7EzTcmXjGTv6W5eb5lllNGXpOTM-a8hid_Q7OfIbVMhbKKsvYw1vHBADK_ss0M0TtLXyaN4sv-AYpOMnk9KniutBf-yNy37Xvsd3Rv00qYPkUvuxb0MCOrfFCXgNUgeA-rHVJ_IXos_NE9e6gky5zxsuDtVUpImLOB4X2OdYzCWaQ8aBoN7HE646DUt-uOQB3GMETXW_wNh6w-C_BudeYfm2D_LccpCi0XRFOJPgV-NdalG_pAiOIfftA36rYhFzmKd-hoLxm5u7THQM3Im6wYPomhQa9HhbuaZpt6u0b5J61Asm_5HZwHJvACoWvdKM1uDn3E0oLY00Hwc_PRw',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 11:04:11.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('8223999AD91A4D88A77B60F990C0EF9B'),	'eyJraWQiOiIzMzU4NWRjZC1mNDhhLTRmY2YtOWVkOS1hN2Y3MTY4N2UwZjQiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5ODY3NDksImlhdCI6MTY5MDk4NDk0OX0.VwHKOu7l4xVRpj2-4imZHFfBr1TJL3RPruemCPD4RAAmc6b4ntsteWy8SQb8c0WxYzuFPQbJC0I5k2sk-g8JcH1Q-Th8_CTzXDa75BsHHiujPelLIIBWzqdtVH2YkKYAb2Zzy0ktATjH9oZQCmoxVH1g_ATg4sjGIhTUFFeCXIS-g649WSwED5VHGNBNJWSLLw6E_MMgz0HioAJlDFPAwniJwMoavgj1zxqOmXUzc2k3e-6D1s4Mn98bHos-hGUHGtSd8ofPwGcx1KKoRyw4pXNaJjSO3rEw4cicOkJ9WQP5vq9Asl2rSpZL3Ey-imGfg23MeljhMBOeflexppySqQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 17:02:29.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('887B222EBC164D3BA87F3E56C9547E60'),	'eyJraWQiOiI4NTMwZjViNy1kYTFiLTQwNTItYTczMS1iMzk2N2ZkZWE2NWUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTY1NzQsImlhdCI6MTY5MDk5NDc3NH0.BvLqHWHBoqBUfHQD4XLBbTm4QcTiUbembx7DdTvx6EjrDxDbthNmwN3AK_q6v6m1HdG3QHRZxMqiP4kCxHdacbLQW5CGBS2gCTzWGimwB6bBP_ZUjfXfc0NW8K_jEGw1b6VaocgpoFZiexhNAyAIw9Ibx2DJJEMwwjodxrhiTM0duDim3uuhjRs8NsmuvNgbws_TDN90lAI_apkB7ExtbA4bjBhaJtFGadhIQ-bNA0fdGPjqiMTpgD675CpNckZLKGjRrUBJHPYukb8EiHPPLMvLdD60mHqRF-tX6FeViwbyh4-pLd1T887bC7BiicfghTfFqw__PJgnFvy6FwB6LA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 19:46:14.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('89CF425C96E64BBDBC1F0A462B5718CE'),	'eyJraWQiOiIxODljZjhlMS0wMWRhLTRjZTMtYjgyYi0wZmY0ODQwNTlkMGYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5ODY0MTcsImlhdCI6MTY5MDk4NDYxN30.sBsAesX1YxroBjtl5SQ90SwnXhxrNiPYEoJ1v4IwyHdYT21K5wNMPouN_qGMvGxt7AOEGokXvr-wEcFv3OB-5mw_5O8YxGShOdesIvdhGKEWknWETMI2ZiRmjLrfRSM8rTn1O8hWoviKE-6JSCqIlDFiV0V8seFLPANzN4cHRewY7wjpCmeNAey0QPOSl1nYbnfo4ABqdrTUDyBGbW9tzLja8-v7dQkr0mzQsBvwXMuRenxUC6bnx28wvx6uTJeZX0hXYDxoQtMKiwSCGiaHtBYQzipPProjFDJ9zLvvbELJpWtDlAQSjC2YoLZFBEcTnnbjC1lnX3VOzoCl-mBPjA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 16:56:57.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('90736F1ECB4C4D5E853EB967C558929B'),	'eyJraWQiOiJkNWVkMWVlYS1mMDdkLTRlOGItOTU1MC1iNDBiNTM0MWE5YjMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTY0NjIsImlhdCI6MTY5MDk5NDY2Mn0.OemNlbVTyho1Owdmt0Fz5ZoJhLfT0W0KDt7XVzl2Lz1T9AETDXGTJSmVnwJhQ4Gkz3bCsBL000chXtX3pxot6n3VBIXJu0pBfyx1wINN9pBP5OyYI4VpwdtickeFGPsg-8tQe4CUz5tMkEDBy-OThGRUstrRcLxwf0SExXp0_MSK_3pFxAhHsqiH3BPKon8tchWQ63ph5gHMMyraGTt-KGlJbjFXF9-BpMk3GlnRWEGYCRSIqsnvASxLyAhaPM98LN1JJf2-GrcvenGJfk6s6EgIN0QiIzIx4fcNhLT069X57NFj80PIyfzsDh4ixACimvFSiLQJU6j95M2w2BnGJg',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 19:44:22.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('91E8390F6047479597D410E183DF7A66'),	'eyJraWQiOiJlMDQ3MzcwZC0zZDM3LTRhMzktOWYxZi1kNDhlZjU5ODhjNWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwMDQ5MzAsImlhdCI6MTY5MTAwMzEzMH0.fN7AXh8cgJGcEqwdtsdZXYrKOJ8D8qEkmCGMopdXTQaqyE0KGh05z7CMu4z55Q-wIpFtb2RKbkrippm3MGT1Ly9gupvB6S-rckGmDic0v1TX2kHeDZv0zGJ1kotooIWecBgrMI2g3W-t2Q82d3EObRQVg0FywrMMCmMdqK_wbnz96tDVg67HOGByYc7KMSAnhvVxuXmkPFKw1OHrYUFyhLpjWaxD9O-XQo4P2iz7pIhlTNipvyYW8VCyEBhhOGQMQPklKQpBfC_4xyQxlcvizvq0J5g-waT9aMe9jJE8fkoqgP8G2g8TJhWUc9g7Qr0BdXpZwEKq0TkyBiu7LEUk7Q',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 22:05:30.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('9CEC4C01646643F9A02E0120355D8958'),	'eyJraWQiOiI4ZTJiZTk2NS0xYmVlLTQ1ZWMtODdiNC1jMjcwOGQzMmIwZDgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTUyOTYsImlhdCI6MTY5MDk5MzQ5Nn0.MYp2-EjscEWJVWVXqNLOqvDOnbwnpLcAB2hQCR7W03bl0yGKtIYxfyxag9MyOSjb8os8UW_YpvBissk59l_Y_mwf8DgqQvbrS9f_6CcrvQqK7RpPh7MMINKFBlGDZowXpXqja8-iB7dKMuQytCx0UT1VMECYll3frgkudaXhcXl_5_L9VIV_hPHrbWQuLzq79jsY5-Wl7utIe2w4JWhXjS_GeX2QKdn4IT01DwwKoDzIdFoEr_4oGoTYqQ9vnapGOmTwr6dN4KvdZyJFT7f6YYhrza3N-c5Eh49H5fq87iX9M5IvQf3DLMLS1M4qiVH94T_Ze8XX4Y2eSDt7cHnMmg',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 19:24:56.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('B02208923C6D4A8B820267DD3CC2506B'),	'eyJraWQiOiIyMmVkNjkzMC1lZjQ4LTQ3YWUtYTYwOC1jNmNlNmRhZWZiYmQiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTQ1NjcsImlhdCI6MTY5MTA1Mjc2N30.DSjzXh9C8Ra0D6k49DCDCkHNuCH9vst6WJDSQWPVlS3meBObQsEFOryBtGScw3btczxKcBGgFH8ZW9fZoqHgVILljZFVRxjfwHGroTEiBAm7SmGmO1TRtdkgvGpTGUucNLGRTXaICcjHNqDlYtt5d_ALU8ACCGdem9Ttry4iHmq9F8qnvQZsbdqDZ4xw-Ntdo2B-El5nRSxIdngZrgw1-_4Y6Hohpr0_7Ggu77N4eFqiYPGD-hQZGEGnx-mrGdsXaEatk7n5Q7KslCrmOWMDeFBG-rb6g24iO6rOaGEre9rvfc5ILevnGU-tzMe8XS3-LC6xhjn87H3EvJPij15pTA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 11:52:47.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('B1A2208562EA40B4B2AC38AD6853A657'),	'eyJraWQiOiI0NDY1ZGI5ZS1mZmUwLTQ4ZjgtODc4Zi02OGJkODllMGJkMDEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTczNTUsImlhdCI6MTY5MDk5NTU1NX0.fPjAM662qTO4tRSk6Rq52n50eUHQDx49Jf9_YsqXrJe8tp9DdQTnFM4S_UEzePBRw8Ug0qgGpaLbS8pLF2hfXeTOqGPza8e-jYagozrjEtSEdvsZlLT3NrZJZ7Xf3-dVj7y6sfZ_82fXxT2zYh7wsX7gMSyCJQwkDxBDuRxtd3SLgtLrG5SzfI8pPCuSA0SnqDCgpfbioyBcWKzjQgQ2eWZXRzEt0qp1-gbi1Q3YuSGeHEaBWZj_qmh61TCBnUVlHGGa1edXQyuTjQYfPGWlmG-p1qCJvogFe2xc8N1JOAgvPA3ksA2GGRgBq07Inoh14s1Hit3f2xOiiGPPPYqz8A',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 19:59:15.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('BB5199F7A6924A21B8C8AC3AD2E1E892'),	'eyJraWQiOiIyZDM4ZDM0NS1mMTgzLTRjMzAtODAzMC0xMGQ4ODQ0M2I1N2MiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNDYxODcsImlhdCI6MTY5MTA0NDM4N30.Odji54yRnoYt_UBQtq912IAIeqsNiDs0kJ-K4EXe1oh-jP6AxPwRBzdZyamRUvU-GzwwaQipjHh17XxVTaurNk_IGq8rS6ef6F-nqKd4ZgxsERXpGy_ht6gjFkch2iV7Ss3tQcDKcMDF8TuFeLULnKW9JEpm84SUJ0N3-oZVeIrVklkqcnIxpi7Opbgu6iJc2LOnC7k9E5LpfcnQCX0HE8bNoy50tgDX0YNC6QOWGyEQ73ey7aOy2B_OED2mWuBJuQjfSi1iCHm4ESb30mnqeRoHgyvqIVbPefHFjRJZEcRChzbheiy8EKMeqenQARFrwajW16gOomzPaxKDNlbX3g',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 09:33:07.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('C670D85CB0BC46C8A9DD1A56D18289D8'),	'eyJraWQiOiIwMDhjZTdlZC0zMGUwLTQzMjgtYjY2NC1mZGZiMTE1NzZhOGQiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNDc2NDQsImlhdCI6MTY5MTA0NTg0NH0.yyGxg3FDc6LIeLjygAcRs6YKFtCKpJsTveIHiR0ycHe9hfmoCbN8bmowi-s5yqyeX6YD17ffjBvCpIa_BqvzYwhq0wgVyUyro_JfdmV2KeysSTGUuJhQQ9NjYlGOPM4AXlXsFYMRxVXe1N8M5wcz5BKMztJZvBHlkTlejHAEESouDufwBSSoHcleb5V_39ToSaqnxIu60VNUM44mKJG5YlarTOSUJYLW7lGgXu5P199QX3-UgcI7pQzEYu4oYOAGeRmRdtBSHfZGFgFuE6QZrSNCxOfJaj06ptVLUTEXiW1oK2bGzQInS1f_7ZcNgPaINeIlYgwsTyKLUJ7xZbi2Ew',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 09:57:24.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('C8D38D8F623C438DB343276339BE794E'),	'eyJraWQiOiJiYWI0NTJlNi0wNjk4LTQzOWItYjhjZS1kYjQ1MTQzYmI5OGMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTYzNTgsImlhdCI6MTY5MDk5NDU1OH0.JJ9K9eo8VqHFrLTiuRsntL0nBlWo7BsewSTsQGCrdWpAy1r99gz8TPyPynrY4RkKuUo4ZsGT8sXRcVjNthvqvkfAVCmI7WlWpktMib1H-FCgK2L32jExdk8f2lEpFgb3iQDO1kzyunuzfmqU_MvnynVFlieCn9rDtHpK_kOaNNg3h0Q8LP8k7oFBVfp6X0MtiHRrYxlmBD4riB7CjxUoINUQKOjwCecYvbd1JKpe3HzHLZr5aauQ1UaqaW-050WAhOgZklnIuvdfqHxQoiRMHTqKPy_dTIqq1_LVwjr52z8r5s0nAZ8_tzXhCSba-WmzVqCcRjioeQ0chVos9kzPWQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 19:42:38.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('CD60A56A4A9249E7B05341F5FF432400'),	'eyJraWQiOiIyYmNiOTAwNi1iNmQwLTRmMmEtYjRhMC1iZTU5OTc2ZTcxZGIiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5OTg1MTAsImlhdCI6MTY5MDk5NjcxMH0.rqxS7jbaCxHUVXPqiVQfFAOtDl7K2l7STEox9PMUcawFdCHdudEyrdZK9XA3YqJtOlsycuqAVIrB4Gpo9MueeQpm09b9cZunBaa5DLNyZVELTM7tofS7z6MICGF8HUVnX6zMUWn6zydd31Phi1LnHy3xwy0YfdgnE345cYVRRo5cQ-leDzJQLRyDKcwbclxaTw45IH7O5jkm2ZLLKOHphO5Juo66UEGj0Eu7FA9NQtD02sO_Uvv8lw64G_Q2ku8nNcob8FNet329KfJyMSvtu7o5vejZWuZo5H8ZJMcSwLK6o5xzq4z0zkn8QfkDlJj-Q0KRem3C-jcGj3XZhclT0w',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 20:18:30.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('D7943D80947246BD8B1A36630B2B0CD6'),	'eyJraWQiOiI5YTg3ZmI4OC05Mjc3LTRkNDEtOWY2Ny01ZGJkODY3MjYwZTkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNDk2NDQsImlhdCI6MTY5MTA0Nzg0NH0.hR-ikcHFGLZ7ruu-JT6phhXBE1lG7stz-K6elGYFgQfUgBeFWv_iZA57epFZjPnerzomNl1aJT8D-Pv5IBmxEhntG3U5OZslOnfxkp3L6OGKjQnM4xjdh4U1jaTaJxtrswDjqsdA1HyRmUEUydOB1sdtq_u-RGOxlW9sbez23E-0MBPSDIsdl7lir--pAiHQUsajz6eB6_Fp4fvwDAIR8n5BlDv4-36A1FLzICPc4lVef-GqHYuy1KJAzrVrymwvjqzp0nn05JBT8W5rs_lAQTNWOYM3iPD5doXNV5GT2TssnziYZsECTcz22dGxYugI3-bVtzOlIV9bzVpmvo3itA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 10:30:44.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('DC0CE63564FF4AB0871B3D5A5BF66A97'),	'eyJraWQiOiJjMTFiNTg5ZC1lYzg5LTQwM2YtOTJjYS05NGNhZjY0MGNmZDMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNjMzOTEsImlhdCI6MTY5MTA2MTU5MX0.aB8W2xiDftVvL91uWz4ZjuWayWG7JLH52NYIhEvMLcmkL8ktN5vuXOUQZostZzlrh6TecJYvYfHi615rX2wA3s_aUzewd330bjP28MIk2owfPjHjaaQiSA4pffkuuyJobLhhw-FD_OqyCQeIWdxRX7P9YsXip4bUD8Cpt_kAxGHwe_4-Ou44jbqCwq1PclXcT93VlWI2hLWGFrJnirni3D4B7Z9mFVbejoJzMYRtyCuQLw25-eBaPPNIIpudfadE7ItovN8tSvr8oKhSaJbRkNm8rvyW9M7RzdIIyZTYJucgur_paQhTPb1c6XmHcn3R83p5YUhjBG_SLIG80si0PA',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 14:19:51.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('DFC71759650F44E3AA5D05372A9785EC'),	'eyJraWQiOiI1Nzc5ZGJkYS04MmZiLTRiNGYtYTVjYy05NjgyNjk1ZjBjNGYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTkyOTksImlhdCI6MTY5MTA1NzQ5OX0.0Pm8apM8GXRbARnU_5m1vkQDHpQUkPp2I23PSgTYFjR8tYAx0Dz0O0A-FUZBg_l2mnCNZyeRzXbo8Z-aSuH5ObqQsZEgg17oNsZssAcWP3NfrM-LS30wwtRLsykrjUZUWou1DmxwPRe6q7MesiB4HFLQ0lCnJNnsgFUyMp91W-JrJ3inZkPqYE8sZTSU5GPUgzdPNushhk-rsVs9Cm5JJ_Ww5hMg9JYICWwvQp33w1QczRsfBfZbzLYsNpxb4tigBK1K1eS-PxNbjvvCwwB2wSmq3R9kJ0DONj9Uj36hmRGPnfHABuipN_PVNbm4Md5B42Ypqw_ZL1hH3DPvODS5EQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 13:11:39.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('EAA50BEC4E054EF48DE165781CAF2A60'),	'eyJraWQiOiI5YTg3ZmI4OC05Mjc3LTRkNDEtOWY2Ny01ZGJkODY3MjYwZTkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTE4NjIsImlhdCI6MTY5MTA1MDA2Mn0.vEevqGAPcfm6B3bqpzSGLaW88YyU3BEk3ttJ0L1wZszm67nFTVEUBiMuWJQavV2Nml93iCCOTI-B7KRQDoc6zvaUIfRhX-BH3tqV_87m4zadbaxJQ9FzvfW_JIi9rx3O_K7HXnB-_pqAUnXw_ky9a5GPeGvmYjciLhwpLdXUp0t89D_JAvx9iySzfrjiKjFxvAI2Z0hlmU6pomD_XhgneOWNHtC0US5gJgyf3UwuFE07gUW-GL2506rgIkdxlSpkYibQ5_8FfZUhVyvcvEgkS0tekWkuSeiey7znp9I07gIQH_2ijjGBKlW7O9AU_KqtEVgS_CYJBodXDEhH4ju3zw',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 11:07:42.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('F8C0D9D2B3624BE6A2D2B481039212F0'),	'eyJraWQiOiI3NDUyOWJhNy1hZjQwLTQwODctYjFkMi05NWYzMDM3MWEyMTUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIkFETUlOIiwiVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5NjE1MDIsImlhdCI6MTY5MDk1OTcwMn0.fE17eEL79xzAnZ9B59_CZCArHXy-1Zjj8TdjPOZM4_tFUK5ynqvNXnJ3atcKtBFUq1YsLtUX-apF0nCu64HFbioBDQCyaAC4PQfEJvGgnGRHzeTX--_R9YqzGfHfJjYxyXMMmdIAuwLbLtJAcyQhmJWUX5K71434i3tyhDp5V5eAK7dkP82_uJW9OryfGoV76eQIpDkTRnjdPtgtjGvzvmFb-Y47JUzK3KToEikypQayK3myi7kDOpj81Kk27Uun_-UNeDkYqR6Fy0V7RSGupIR-fnYd32ubJdm_5v5Nnnfz5qsQpnnws8y8p85jQ91J7yXZ1VBc5A2H9O0H_dWCog',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 10:01:42.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('FCC2D1C73FBC4F9588761E0BC858B9CD'),	'eyJraWQiOiI2OTQwOGExZS0zN2M2LTRiMDktOWY5Yy0yODkxZTZmY2Y0OWEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTA5ODY2MTMsImlhdCI6MTY5MDk4NDgxM30.KSy2GEEp7FGGSB7rgfSzAosj8WZ-CnYLfNBs2ygzOy-OBTmiAL4719JgrrkRfvzfqAZ38t8LZsuM-24I6t1AYnpL-GvZNK4pUrxJqLc5ReKtlrf2afMnG6bJwvcMnJZAPbVBiVC0PTKr3rwgGdjffs-6_1ewPROcqaOc4MkXPb8pa2csWTbGQi2Mjtk6RqCpwi6S-h0HL3EDECaCgfanGEVZ3uDGXn0fxt9pAooE__5tgc-ZDWzsuJa3JdjtFWePo6AtHm-c_v3gPzpTR5JGEfH0mtW3fUhGNxeXmqHGqFQ88RoS6By0GM2mznnin3NUXrIPH2N7hA_yOGRjTx1vvQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-02 17:00:13.000000',	NULL,	NULL,	NULL),
+                                                                                                                                                        (UNHEX('FF0FF01C39724DBF922CCB1C91C54E90'),	'eyJraWQiOiI5YTg3ZmI4OC05Mjc3LTRkNDEtOWY2Ny01ZGJkODY3MjYwZTkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInBlcm1pc3Npb25zIjpbIlVTRVIiLCJBRE1JTiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJleHAiOjE2OTEwNTIxMTQsImlhdCI6MTY5MTA1MDMxNH0.u3FjXdfnpcFUMqaQuAKflVsg2H5CzIfAhgg5vmMliKF0QGDpRvwGMailL1y_ty984STJyDoZ1gKtHxlXKvXnriOWS2o4qB99LjlhQ3wM8FMa_yEaV6wZahWnQY6j1c2dpvOT3ya2DJXoGn3va-FBl4S6-wsT-1CgqIEvhQbSZlqjaLYtdbe_DY9sJyxP5XXooH2Fs703sJbPoyggQNl024sZtMuEnwhoDW_xJHTkYRlmk3zvV6aZp3CIGvZ2z5N5Cznt8Wjcsx72kJZDcx_oXFY2fZaM661hSOfQtNIB5K44YA1JTpnt2Itgyt4q1tqMfDs5wOUCbrvhQIUL0e85tQ',	'admin',	CONV('0', 2, 10) + 0,	1,	NULL,	'2023-08-03 11:11:54.000000',	NULL,	NULL,	NULL);
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+                         `id` binary(16) NOT NULL,
+                         `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+                         `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                         `firstname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                         `lastname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+                         `account_number` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+                         `is_account_locked` bit(1) NOT NULL,
+                         `is_account_expired` bit(1) NOT NULL,
+                         `is_credentials_expired` bit(1) NOT NULL,
+                         `is_enabled` bit(1) NOT NULL,
+                         `deleted` bit(1) DEFAULT b'0',
+                         `balance` decimal(10,2) NOT NULL,
+                         `version` int DEFAULT NULL,
+                         `updated_on` datetime DEFAULT NULL,
+                         `created_on` datetime(6) NOT NULL,
+                         `created_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                         `last_modified_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                         PRIMARY KEY (`id`),
+                         UNIQUE KEY `UK_r43af9ap4edm43mmtq01oddj6` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `users` (`id`, `username`, `password`, `firstname`, `lastname`, `account_number`, `is_account_locked`, `is_account_expired`, `is_credentials_expired`, `is_enabled`, `deleted`, `balance`, `version`, `updated_on`, `created_on`, `created_by`, `last_modified_by`) VALUES
+                                                                                                                                                                                                                                                                                    (UNHEX('F84136E1A60F4890BC8D0C82469CF37A'),	'user',	'{bcrypt}$2a$10$8ND7peb4Dpg.1s0AsmXqne/HMkXbV9zkpAu76Bb9v0MqUmBWC/FNm',	'user',	'user',	'615305E4-9882-4AD7-BACD-6384D71820B6',	CONV('0', 2, 10) + 0,	CONV('0', 2, 10) + 0,	CONV('0', 2, 10) + 0,	CONV('1', 2, 10) + 0,	CONV('0', 2, 10) + 0,	1000.00,	NULL,	NULL,	'2023-08-01 00:16:08.000000',	NULL,	NULL),
+                                                                                                                                                                                                                                                                                    (UNHEX('FC19FD13D8A94DF992915221C40E9898'),	'admin',	'{bcrypt}$2a$10$NHuwmKM1AxCDo4Tp9At./OqO7nbmKdpmgsdabtMIQu4B.hkaXqb7.',	'admin',	'admin',	'9B4F4326-74B9-499C-9B6D-D94794476872',	CONV('0', 2, 10) + 0,	CONV('0', 2, 10) + 0,	CONV('0', 2, 10) + 0,	CONV('1', 2, 10) + 0,	CONV('0', 2, 10) + 0,	589.44,	NULL,	NULL,	'2023-08-01 00:16:08.000000',	NULL,	NULL);
+
+DROP TABLE IF EXISTS `users_permissions`;
+CREATE TABLE `users_permissions` (
+                                     `fk_user_id` binary(16) NOT NULL,
+                                     `fk_permission_id` binary(16) NOT NULL,
+                                     `created_on` datetime(6) NOT NULL,
+                                     `updated_on` datetime DEFAULT NULL,
+                                     `deleted` bit(1) DEFAULT b'0',
+                                     PRIMARY KEY (`fk_user_id`,`fk_permission_id`),
+                                     KEY `FKbvwr8podnb6u53eeiefx7agb3y6w` (`fk_permission_id`),
+                                     CONSTRAINT `FKaeu8lc9yh8selaevs59733qluau` FOREIGN KEY (`fk_user_id`) REFERENCES `users` (`id`),
+                                     CONSTRAINT `FKbvwr8podnb6u53eeiefx7agb3y6w` FOREIGN KEY (`fk_permission_id`) REFERENCES `permissions` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `users_permissions` (`fk_user_id`, `fk_permission_id`, `created_on`, `updated_on`, `deleted`) VALUES
+                                                                                                              (UNHEX('F84136E1A60F4890BC8D0C82469CF37A'),	UNHEX('0A1105A198FB4428894278D33AB2F634'),	'2023-08-01 00:16:08.000000',	NULL,	NULL),
+                                                                                                              (UNHEX('FC19FD13D8A94DF992915221C40E9898'),	UNHEX('0A1105A198FB4428894278D33AB2F634'),	'2023-08-01 00:16:08.000000',	NULL,	NULL),
+                                                                                                              (UNHEX('FC19FD13D8A94DF992915221C40E9898'),	UNHEX('5967FBC7766D43C0A3FAD1C9FA544381'),	'2023-08-01 00:16:08.000000',	NULL,	NULL);
+
+-- 2023-08-03 11:49:14

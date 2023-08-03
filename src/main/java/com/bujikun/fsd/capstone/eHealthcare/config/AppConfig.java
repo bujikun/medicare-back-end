@@ -22,7 +22,6 @@ public class AppConfig {
     @Qualifier("JSON_PATCH_OBJECT_MAPPER")
     public ObjectMapper jsonPatchObjectMapper(){
         return new ObjectMapper()
-
                 .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
