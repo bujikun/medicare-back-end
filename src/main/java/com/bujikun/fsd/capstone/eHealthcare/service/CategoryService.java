@@ -3,8 +3,12 @@ package com.bujikun.fsd.capstone.eHealthcare.service;
 import com.bujikun.fsd.capstone.eHealthcare.config.dto.CategoryDTO;
 import com.bujikun.fsd.capstone.eHealthcare.config.dto.SellerDTO;
 import com.bujikun.fsd.capstone.eHealthcare.entity.Category;
+import com.bujikun.fsd.capstone.eHealthcare.exceptions.BaseException;
 import com.bujikun.fsd.capstone.eHealthcare.repository.CategoryRepository;
+import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +21,7 @@ import java.util.UUID;
 @Transactional
 public class CategoryService implements IBaseService<Category, UUID>{
     private final CategoryRepository categoryRepository;
+    private final DateUtil dateUtil;
 
     @Override
     public List<Category> findAll() {
@@ -25,12 +30,16 @@ public class CategoryService implements IBaseService<Category, UUID>{
 
     @Override
     public Optional<Category> findById(UUID uuid) {
-        return Optional.empty();
+        return categoryRepository.findById(uuid);
     }
 
     @Override
     public Category save(Category category) {
-        return null;
+        return categoryRepository.save(category);
+    }
+    public Category create(CategoryDTO categoryDTO) {
+        var category = CategoryDTO.toCategory(categoryDTO,  dateUtil);
+        return categoryRepository.save(category);
     }
 
     @Override

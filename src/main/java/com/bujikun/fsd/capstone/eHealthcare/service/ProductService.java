@@ -37,6 +37,12 @@ public class ProductService implements IBaseService<Product, UUID> {
 
     }
 
+    public Product findOne(UUID uuid) {
+        return productRepository.findById(uuid)
+                .orElseThrow(()->new ProductNotFoundException("Product Not Found"));
+
+    }
+
     public Optional<ProductDTO> findOneById(UUID uuid) {
         var op =  productRepository.findOneById(uuid);
 return op;

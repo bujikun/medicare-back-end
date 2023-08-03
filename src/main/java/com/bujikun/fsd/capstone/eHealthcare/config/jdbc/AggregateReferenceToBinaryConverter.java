@@ -1,6 +1,7 @@
 package com.bujikun.fsd.capstone.eHealthcare.config.jdbc;
 
 import com.bujikun.fsd.capstone.eHealthcare.entity.NonAggregateEntity;
+import com.bujikun.fsd.capstone.eHealthcare.mapping.jdbc.CustomAggregateReference;
 import lombok.NoArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
@@ -14,9 +15,9 @@ import java.util.UUID;
 @WritingConverter
 @NoArgsConstructor
 public class AggregateReferenceToBinaryConverter<T extends NonAggregateEntity> implements
-        Converter<AggregateReference<T,UUID>, byte[]> {
+        Converter<CustomAggregateReference<T,UUID>, byte[]> {
     @Override
-    public byte[] convert(AggregateReference<T, UUID> source) {
+    public byte[] convert(CustomAggregateReference<T, UUID> source) {
         byte[] uuidBytes = new byte[16];
         ByteBuffer.wrap(uuidBytes)
                 .order(ByteOrder.BIG_ENDIAN)

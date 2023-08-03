@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface SellerRepository extends BaseRepository<Seller, UUID>{
     @Query("SELECT COUNT(*) FROM sellers")
     Integer getCount();
-    @Query("SELECT name AS seller_name,id FROM sellers")
+    @Query("SELECT name AS seller_name,id,created_on FROM sellers")
     List<SellerDTO> getAll();
 }

@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
+import com.bujikun.fsd.capstone.eHealthcare.mapping.jdbc.CustomAggregateReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,5 +25,5 @@ import java.util.UUID;
 @Table(name = "users_permissions")
 public class UserPermission extends NonAggregateEntity<Permission,UUID>{
     @Column("fk_permission_id")
-    private AggregateReference<Permission, UUID> permissionId;
+    private CustomAggregateReference<Permission, UUID> permissionId;
 }

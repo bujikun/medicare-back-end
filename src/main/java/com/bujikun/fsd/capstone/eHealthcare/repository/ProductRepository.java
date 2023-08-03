@@ -16,6 +16,7 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
   `products`.`name` AS `name`, 
   `products`.`price` AS `price`, 
   `products`.`img_url` AS `img_url`, 
+`products`.`deleted` AS `deleted`, 
   `products`.`created_by` AS `created_by`, 
   `products`.`created_on` AS `created_on`,
    `products`.`updated_on` AS `updated_on`, 
@@ -61,6 +62,7 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
   `products`.`price` AS `price`, 
   `products`.`img_url` AS `img_url`, 
   `products`.`created_by` AS `created_by`, 
+      `products`.`deleted` AS `deleted`, 
   `products`.`created_on` AS `created_on`,
    `products`.`updated_on` AS `updated_on`, 
   `products`.`description` AS `description`, 
@@ -74,7 +76,7 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
    JOIN categories c on pc.fk_category_id = c.id
    JOIN products_sellers ps on products.id = ps.fk_product_id
    JOIN sellers s on ps.fk_seller_id = s.id
-   WHERE `products`.id = :id AND `products`.deleted = 0
+   WHERE `products`.id = :id AND `products`.deleted = false
 """)
     Optional<ProductDTO> findOneById(@Param("id") UUID id);
     @Query("SELECT COUNT(*) FROM products")
@@ -82,11 +84,11 @@ public interface ProductRepository extends BaseRepository<Product, UUID>{
 
     @Query("""
             SELECT * FROM products p
-                        WHERE
+                        WHERE(
                         name LIKE CONCAT('%',:query,'%')
                         OR description 
                         LIKE CONCAT('%',:query,'%')
-                        OR p.price LIKE CONCAT('%',:query,'%') AND deleted=false
+                        OR p.price LIKE CONCAT('%',:query,'%')) AND deleted=false
             """
     )
     List<ProductDTO> search(@Param("query") String query);

@@ -1,9 +1,12 @@
 package com.bujikun.fsd.capstone.eHealthcare.service;
 
+import com.bujikun.fsd.capstone.eHealthcare.config.dto.CategoryDTO;
 import com.bujikun.fsd.capstone.eHealthcare.config.dto.SellerDTO;
+import com.bujikun.fsd.capstone.eHealthcare.entity.Category;
 import com.bujikun.fsd.capstone.eHealthcare.entity.Seller;
 import com.bujikun.fsd.capstone.eHealthcare.repository.CategoryRepository;
 import com.bujikun.fsd.capstone.eHealthcare.repository.SellerRepository;
+import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +20,7 @@ import java.util.UUID;
 @Transactional
 public class SellerService implements IBaseService<Seller, UUID>{
     private final SellerRepository sellerRepository;
+    private final DateUtil dateUtil;
 
     @Override
     public List<Seller> findAll() {
@@ -25,12 +29,16 @@ public class SellerService implements IBaseService<Seller, UUID>{
 
     @Override
     public Optional<Seller> findById(UUID uuid) {
-        return Optional.empty();
+        return sellerRepository.findById(uuid);
     }
 
     @Override
     public Seller save(Seller seller) {
-        return null;
+        return sellerRepository.save(seller);
+    }
+    public Seller create(SellerDTO sellerDTO) {
+        var seller = SellerDTO.toSeller(sellerDTO,  dateUtil);
+        return sellerRepository.save(seller);
     }
 
     @Override

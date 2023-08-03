@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
+import com.bujikun.fsd.capstone.eHealthcare.mapping.jdbc.CustomAggregateReference;
 import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -55,7 +56,7 @@ public class User extends BaseEntity{
 
     public void linkPermission(Permission permission){
         var userPermission = new UserPermission();
-        userPermission.setPermissionId(AggregateReference.to(permission.getId()));
+        userPermission.setPermissionId(new CustomAggregateReference<>(permission.getId()));
         userPermission.setCreatedOn(DateUtil.getNow());
         userPermissions.add(userPermission);
     }
@@ -64,7 +65,7 @@ public class User extends BaseEntity{
         var userPermissionSet = permissions.stream()
                 .map(permission->{
                     var userPerm = new UserPermission();
-                    userPerm.setPermissionId(AggregateReference.to(permission.getId()));
+                    userPerm.setPermissionId(new CustomAggregateReference<>(permission.getId()));
                     userPerm.setCreatedOn(DateUtil.getNow());
                     return userPerm;
                 })

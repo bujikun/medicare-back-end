@@ -1,5 +1,6 @@
 package com.bujikun.fsd.capstone.eHealthcare.entity;
 
+import com.bujikun.fsd.capstone.eHealthcare.mapping.jdbc.CustomAggregateReference;
 import com.bujikun.fsd.capstone.eHealthcare.util.DateUtil;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -40,7 +41,7 @@ public class Product extends BaseEntity {
 
     public void linkCategory(Category category) {
         var pc = new ProductCategory();
-        pc.setCategoryId(AggregateReference.to(category.getId()));
+        pc.setCategoryId(new CustomAggregateReference<>(category.getId()));
         pc.setCreatedOn(DateUtil.getNow());
         if(productCategories.contains(pc)){
             return;
@@ -52,7 +53,7 @@ public class Product extends BaseEntity {
         categories.stream()
                 .map(category -> {
             var pc = new ProductCategory();
-            pc.setCategoryId(AggregateReference.to(category.getId()));
+            pc.setCategoryId(new CustomAggregateReference<>(category.getId()));
             pc.setCreatedOn(DateUtil.getNow());
             return pc;
         })
@@ -60,7 +61,7 @@ public class Product extends BaseEntity {
     }
     public void linkSeller(Seller seller) {
         var pc = new ProductSeller();
-        pc.setSellerId(AggregateReference.to(seller.getId()));
+        pc.setSellerId(new CustomAggregateReference(seller.getId()));
         pc.setCreatedOn(DateUtil.getNow());
         if(productSellers.contains(pc)){
 
@@ -69,14 +70,16 @@ public class Product extends BaseEntity {
         productSellers.add(pc);
     }
 
+    public ProductSeller toProductSeller(Seller seller) {
+        var pc = new ProductSeller();
+        pc.setSellerId(new CustomAggregateReference(seller.getId()));
+        pc.setCreatedOn(DateUtil.getNow());
+       return pc;
+    }
+
     public void linkSellers(Set<Seller> sellers) {
         sellers.stream()
-                .map(category -> {
-                    var pc = new ProductSeller();
-                    pc.setSellerId(AggregateReference.to(category.getId()));
-                    pc.setCreatedOn(DateUtil.getNow());
-                    return pc;
-                })
+                .map(this::toProductSeller)
                 .forEach(productSellers::add);
     }
 
