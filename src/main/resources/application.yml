@@ -5,6 +5,9 @@ spring:
     user: root
     password: password
     schemas: "e_healthcare"
+    ignore-migration-patterns:
+      repeatable: missing,*:pending
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/e_healthcare?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
