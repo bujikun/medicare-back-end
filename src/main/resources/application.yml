@@ -1,16 +1,7 @@
 spring:
-  flyway:
-    baseline-on-migrate: true
-    url: jdbc:mysql://localhost:3306/e_healthcare?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    user: root
-    password: password
-    schemas: "e_healthcare"
-    ignore-migration-patterns:
-      repeatable: missing,*:pending
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/e_healthcare?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://107.22.109.176:80/e_healthcare?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
     password: password
     hikari:

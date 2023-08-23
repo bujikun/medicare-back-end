@@ -1,0 +1,43 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      - 'MYSQL_DATABASE=e_healthcare'
+      - 'MYSQL_ROOT_PASSWORD=password'
+    volumes:
+      - db_data:/var/lib/mysql
+      - db_config:/etc/mysql/conf.d
+    networks:
+      - medicare-network
+    ports:
+      - '3309:3306'
+  #the authorization server spring boot app
+  backend:
+    container_name: medicare_backend
+    build:
+      context: .
+    #mount directories during development
+    volumes:
+      - ./:/app/
+      - ./.m2:/root/.m2
+    networks:
+      - medicare-network
+    depends_on:
+      - mysql
+    restart: on-failure
+    env_file:
+      - ./.env
+    ports:
+      - "8080:8080"
+    tty: true
+    command: sh run.sh
+  #the authorization server spring boot app
+#named volumes keeping the data alive after a restart
+volumes:
+  db_data:
+  db_config:
+networks:
+  medicare-network:
+#db ip 107.22.109.176

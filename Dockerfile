@@ -1,4 +1,4 @@
-FROM eclipse-temurin:20.0.2_9-jdk-jammy as builder
+FROM --platform=linux/amd64 eclipse-temurin:20.0.2_9-jdk-jammy as builder
 WORKDIR /opt/app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
